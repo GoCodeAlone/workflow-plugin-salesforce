@@ -1,41 +1,23 @@
 version: 2
-
-before:
-  hooks:
-    - go mod tidy
-    - "cp plugin.json plugin.json.orig"
-    - "sed -i.bak 's/\"version\": \".*\"/\"version\": \"{{ .Version }}\"/' plugin.json && rm -f plugin.json.bak"
-
-after:
-  hooks:
-    - "mv plugin.json.orig plugin.json"
-
+project_name: workflow-plugin-salesforce
 builds:
-  - id: workflow-plugin-salesforce
-    main: ./cmd/{{ .ProjectName }}
-    binary: "{{ .ProjectName }}"
-    env:
-      - CGO_ENABLED=0
-      - GOPRIVATE=github.com/GoCodeAlone/*
-    goos:
-      - linux
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    ldflags:
-      - -s -w -X main.version={{.Version}}
-
+  - id: plugin
+    main: ./cmd/workflow-plugin-salesforce
+    binary: workflow-plugin-salesforce
+    env: [CGO_ENABLED=0]
+    goos: [linux, darwin]
+    goarch: [amd64, arm64]
+    ldflags: ["-s", "-w"]
 archives:
-  - formats: [tar.gz]
+  - id: plugin
+    builds: [plugin]
     name_template: "{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}"
+    format: tar.gz
     files:
       - plugin.json
       - LICENSE
-
 checksum:
-  name_template: "checksums.txt"
-
+  name_template: checksums.txt
 release:
   github:
     owner: GoCodeAlone
