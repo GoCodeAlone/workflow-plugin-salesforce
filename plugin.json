@@ -1,14 +1,14 @@
 {
     "name": "workflow-plugin-salesforce",
     "version": "0.1.0",
-    "description": "Salesforce CRM platform plugin (~75 step types across all Salesforce REST APIs)",
+    "description": "Salesforce CRM plugin",
     "author": "GoCodeAlone",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "type": "external",
     "tier": "community",
     "private": false,
     "minEngineVersion": "0.3.30",
-    "keywords": ["salesforce", "crm", "soql", "sosl", "apex", "bulk", "chatter", "flow"],
+    "keywords": ["salesforce", "crm", "soql"],
     "homepage": "https://github.com/GoCodeAlone/workflow-plugin-salesforce",
     "repository": "https://github.com/GoCodeAlone/workflow-plugin-salesforce",
     "capabilities": {
