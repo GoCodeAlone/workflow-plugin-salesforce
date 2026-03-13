@@ -21,7 +21,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sync manifest to registry
-        if: success()
+        if: success() && env.GH_TOKEN != ''
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
         run: |
