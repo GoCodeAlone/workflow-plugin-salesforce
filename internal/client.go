@@ -56,6 +56,11 @@ func newSalesforceClientFromSDK(client *sf.Client, apiVersion string) *salesforc
 	token := ""
 	if t := client.GetToken(); t != nil {
 		token = t.AccessToken
+		// WithAccessToken path skips Connect(), so InstanceURL() is empty.
+		// Fall back to the token's InstanceURL which was set during auth.
+		if instanceURL == "" {
+			instanceURL = strings.TrimRight(t.InstanceURL, "/")
+		}
 	}
 
 	hc := sfhttp.NewClient(sfhttp.Config{
