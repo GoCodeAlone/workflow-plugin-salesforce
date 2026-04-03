@@ -2,7 +2,10 @@ module github.com/GoCodeAlone/workflow-plugin-salesforce
 
 go 1.26.0
 
-require github.com/GoCodeAlone/workflow v0.3.56
+require (
+	github.com/GoCodeAlone/workflow v0.3.56
+	github.com/PramithaMJ/salesforce/v2 v2.0.2
+)
 
 require (
 	cel.dev/expr v0.25.1 // indirect

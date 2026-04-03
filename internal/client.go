@@ -1,210 +1,198 @@
 package internal
 
 import (
-	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"net/url"
 	"strings"
-	"time"
+
+	sf "github.com/PramithaMJ/salesforce/v2"
+	sfhttp "github.com/PramithaMJ/salesforce/v2/http"
+	"github.com/PramithaMJ/salesforce/v2/types"
 )
 
 const defaultAPIVersion = "v63.0"
 
-// salesforceClient is a lightweight HTTP REST client for the Salesforce REST API.
+// salesforceClient wraps the PramithaMJ Salesforce SDK HTTP transport
+// while preserving the same method signatures all 73+ steps depend on.
 type salesforceClient struct {
-	httpClient  *http.Client
-	instanceURL string
-	accessToken string
-	apiVersion  string
+	sdkHTTP     *sfhttp.Client // SDK HTTP client for authenticated REST calls
+	sfClient    *sf.Client     // full SDK client for typed service access (may be nil in tests)
+	instanceURL string         // base instance URL — accessed directly by step_apex and step_users
+	accessToken string         // current access token
+	apiVersion  string         // e.g. "v63.0"
 }
 
 // newSalesforceClient creates a client using a pre-existing access token.
+// Used for direct-token initialization and test helpers.
 func newSalesforceClient(instanceURL, accessToken, apiVersion string) *salesforceClient {
 	if apiVersion == "" {
 		apiVersion = defaultAPIVersion
 	}
+	instanceURL = strings.TrimRight(instanceURL, "/")
+	hc := sfhttp.NewClient(sfhttp.Config{
+		APIVersion: strings.TrimPrefix(apiVersion, "v"),
+		MaxRetries: 0,
+	})
+	hc.SetBaseURL(instanceURL)
+	hc.SetAccessToken(accessToken)
 	return &salesforceClient{
-		httpClient:  &http.Client{Timeout: 30 * time.Second},
-		instanceURL: strings.TrimRight(instanceURL, "/"),
+		sdkHTTP:     hc,
+		instanceURL: instanceURL,
 		accessToken: accessToken,
 		apiVersion:  apiVersion,
 	}
 }
 
-// authenticate uses OAuth2 client credentials (or password flow) to obtain an access token.
-func authenticateOAuth(loginURL, clientID, clientSecret string) (instanceURL, accessToken string, err error) {
-	if loginURL == "" {
-		loginURL = "https://login.salesforce.com"
+// newSalesforceClientFromSDK creates a compatibility wrapper around a
+// fully-initialised SDK client, keeping the same REST methods that
+// step implementations call.
+func newSalesforceClientFromSDK(client *sf.Client, apiVersion string) *salesforceClient {
+	if apiVersion == "" {
+		apiVersion = defaultAPIVersion
 	}
-	tokenURL := strings.TrimRight(loginURL, "/") + "/services/oauth2/token"
-	data := url.Values{}
-	data.Set("grant_type", "client_credentials")
-	data.Set("client_id", clientID)
-	data.Set("client_secret", clientSecret)
+	instanceURL := client.InstanceURL()
+	token := ""
+	if t := client.GetToken(); t != nil {
+		token = t.AccessToken
+	}
 
-	resp, err := http.PostForm(tokenURL, data)
-	if err != nil {
-		return "", "", fmt.Errorf("salesforce oauth: %w", err)
+	hc := sfhttp.NewClient(sfhttp.Config{
+		APIVersion: strings.TrimPrefix(apiVersion, "v"),
+		MaxRetries: types.DefaultMaxRetries,
+	})
+	hc.SetBaseURL(instanceURL)
+	hc.SetAccessToken(token)
+	return &salesforceClient{
+		sdkHTTP:     hc,
+		sfClient:    client,
+		instanceURL: instanceURL,
+		accessToken: token,
+		apiVersion:  apiVersion,
 	}
-	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
-	if resp.StatusCode != http.StatusOK {
-		return "", "", fmt.Errorf("salesforce oauth: status %d: %s", resp.StatusCode, body)
-	}
-	var result struct {
-		AccessToken string `json:"access_token"`
-		InstanceURL string `json:"instance_url"`
-		Error       string `json:"error"`
-		Description string `json:"error_description"`
-	}
-	if err := json.Unmarshal(body, &result); err != nil {
-		return "", "", fmt.Errorf("salesforce oauth: decode: %w", err)
-	}
-	if result.Error != "" {
-		return "", "", fmt.Errorf("salesforce oauth: %s: %s", result.Error, result.Description)
-	}
-	return result.InstanceURL, result.AccessToken, nil
 }
 
-// baseURL returns the versioned API base URL.
+// versionedPath prepends the versioned REST base path to a relative
+// path.  Absolute URLs (starting with "http") are returned as-is.
+func (c *salesforceClient) versionedPath(path string) string {
+	if strings.HasPrefix(path, "http") {
+		// Absolute URL — strip the instance URL prefix so the SDK HTTP
+		// client (which prepends its own baseURL) produces the correct
+		// final URL.
+		if strings.HasPrefix(path, c.instanceURL) {
+			return strings.TrimPrefix(path, c.instanceURL)
+		}
+		return path
+	}
+	return fmt.Sprintf("/services/data/%s%s", c.apiVersion, path)
+}
+
+// baseURL returns the versioned API base URL (kept for backward compat).
 func (c *salesforceClient) baseURL() string {
 	return fmt.Sprintf("%s/services/data/%s", c.instanceURL, c.apiVersion)
 }
 
-// do performs an HTTP request and decodes the JSON response.
+// do performs an HTTP request via the SDK transport and decodes the
+// JSON response.  The method signature is unchanged from the original
+// custom client so all step implementations continue to compile.
 func (c *salesforceClient) do(method, path string, body any) (map[string]any, int, error) {
-	fullURL := path
-	if !strings.HasPrefix(path, "http") {
-		fullURL = c.baseURL() + path
+	sdkPath := c.versionedPath(path)
+	ctx := context.Background()
+
+	var respBody []byte
+	var err error
+
+	switch method {
+	case http.MethodGet:
+		respBody, err = c.sdkHTTP.Get(ctx, sdkPath)
+	case http.MethodPost:
+		respBody, err = c.sdkHTTP.Post(ctx, sdkPath, body)
+	case http.MethodPatch:
+		respBody, err = c.sdkHTTP.Patch(ctx, sdkPath, body)
+	case http.MethodDelete:
+		respBody, err = c.sdkHTTP.Delete(ctx, sdkPath)
+	case http.MethodPut:
+		respBody, err = c.sdkHTTP.Put(ctx, sdkPath, body)
+	default:
+		return nil, 0, fmt.Errorf("salesforce: unsupported method: %s", method)
 	}
 
-	var reqBody io.Reader
-	if body != nil {
-		b, err := json.Marshal(body)
-		if err != nil {
-			return nil, 0, fmt.Errorf("salesforce: marshal request: %w", err)
-		}
-		reqBody = bytes.NewReader(b)
-	}
-
-	req, err := http.NewRequest(method, fullURL, reqBody)
 	if err != nil {
-		return nil, 0, fmt.Errorf("salesforce: create request: %w", err)
-	}
-	req.Header.Set("Authorization", "Bearer "+c.accessToken)
-	req.Header.Set("Accept", "application/json")
-	if body != nil {
-		req.Header.Set("Content-Type", "application/json")
+		statusCode := extractStatusCode(err)
+		return nil, statusCode, fmt.Errorf("salesforce: %s", err.Error())
 	}
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return nil, 0, fmt.Errorf("salesforce: http: %w", err)
-	}
-	defer resp.Body.Close()
-	respBody, _ := io.ReadAll(resp.Body)
-
-	if resp.StatusCode == http.StatusNoContent {
-		return map[string]any{"success": true}, resp.StatusCode, nil
+	// Empty response (e.g. 204 No Content)
+	if len(respBody) == 0 {
+		return map[string]any{"success": true}, 204, nil
 	}
 
-	// Salesforce sometimes returns an array for error responses
-	if len(respBody) > 0 && respBody[0] == '[' {
+	// Salesforce sometimes returns an array
+	if respBody[0] == '[' {
 		var arr []map[string]any
 		if err := json.Unmarshal(respBody, &arr); err != nil {
-			return nil, resp.StatusCode, fmt.Errorf("salesforce: decode array: %w", err)
+			return nil, 200, fmt.Errorf("salesforce: decode array: %w", err)
 		}
 		if len(arr) > 0 {
-			return arr[0], resp.StatusCode, nil
+			return arr[0], 200, nil
 		}
-		return map[string]any{}, resp.StatusCode, nil
+		return map[string]any{}, 200, nil
 	}
 
 	var result map[string]any
-	if len(respBody) > 0 {
-		if err := json.Unmarshal(respBody, &result); err != nil {
-			return nil, resp.StatusCode, fmt.Errorf("salesforce: decode response: %w", err)
-		}
+	if err := json.Unmarshal(respBody, &result); err != nil {
+		return nil, 200, fmt.Errorf("salesforce: decode response: %w", err)
 	}
-	if result == nil {
-		result = map[string]any{}
-	}
-
-	if resp.StatusCode >= 400 {
-		errMsg := fmt.Sprintf("status %d", resp.StatusCode)
-		if msg, ok := result["message"].(string); ok {
-			errMsg = msg
-		} else if errCode, ok := result["errorCode"].(string); ok {
-			errMsg = errCode
-		}
-		return result, resp.StatusCode, fmt.Errorf("salesforce: %s", errMsg)
-	}
-
-	return result, resp.StatusCode, nil
+	return result, 200, nil
 }
 
-// doArray performs an HTTP GET and decodes the response as an array (for SOQL results etc.).
+// doArray performs an HTTP request and decodes the response as an
+// array (for collection endpoints, SOQL results, etc.).
 func (c *salesforceClient) doArray(method, path string, body any) ([]any, map[string]any, int, error) {
-	fullURL := path
-	if !strings.HasPrefix(path, "http") {
-		fullURL = c.baseURL() + path
+	sdkPath := c.versionedPath(path)
+	ctx := context.Background()
+
+	var respBody []byte
+	var err error
+
+	switch method {
+	case http.MethodGet:
+		respBody, err = c.sdkHTTP.Get(ctx, sdkPath)
+	case http.MethodPost:
+		respBody, err = c.sdkHTTP.Post(ctx, sdkPath, body)
+	case http.MethodPatch:
+		respBody, err = c.sdkHTTP.Patch(ctx, sdkPath, body)
+	case http.MethodDelete:
+		respBody, err = c.sdkHTTP.Delete(ctx, sdkPath)
+	default:
+		return nil, nil, 0, fmt.Errorf("salesforce: unsupported method: %s", method)
 	}
 
-	var reqBody io.Reader
-	if body != nil {
-		b, err := json.Marshal(body)
-		if err != nil {
-			return nil, nil, 0, fmt.Errorf("salesforce: marshal request: %w", err)
-		}
-		reqBody = bytes.NewReader(b)
-	}
-
-	req, err := http.NewRequest(method, fullURL, reqBody)
 	if err != nil {
-		return nil, nil, 0, fmt.Errorf("salesforce: create request: %w", err)
-	}
-	req.Header.Set("Authorization", "Bearer "+c.accessToken)
-	req.Header.Set("Accept", "application/json")
-	if body != nil {
-		req.Header.Set("Content-Type", "application/json")
+		statusCode := extractStatusCode(err)
+		return nil, nil, statusCode, fmt.Errorf("salesforce: %s", err.Error())
 	}
 
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return nil, nil, 0, fmt.Errorf("salesforce: http: %w", err)
+	if len(respBody) == 0 {
+		return nil, map[string]any{}, 200, nil
 	}
-	defer resp.Body.Close()
-	respBody, _ := io.ReadAll(resp.Body)
 
 	// Try array first
-	if len(respBody) > 0 && respBody[0] == '[' {
+	if respBody[0] == '[' {
 		var arr []any
 		if err := json.Unmarshal(respBody, &arr); err != nil {
-			return nil, nil, resp.StatusCode, fmt.Errorf("salesforce: decode array: %w", err)
+			return nil, nil, 200, fmt.Errorf("salesforce: decode array: %w", err)
 		}
-		return arr, nil, resp.StatusCode, nil
+		return arr, nil, 200, nil
 	}
 
 	// Fall back to object
 	var result map[string]any
-	if len(respBody) > 0 {
-		if err := json.Unmarshal(respBody, &result); err != nil {
-			return nil, nil, resp.StatusCode, fmt.Errorf("salesforce: decode response: %w", err)
-		}
+	if err := json.Unmarshal(respBody, &result); err != nil {
+		return nil, nil, 200, fmt.Errorf("salesforce: decode response: %w", err)
 	}
-	if resp.StatusCode >= 400 {
-		errMsg := fmt.Sprintf("status %d", resp.StatusCode)
-		if result != nil {
-			if msg, ok := result["message"].(string); ok {
-				errMsg = msg
-			}
-		}
-		return nil, result, resp.StatusCode, fmt.Errorf("salesforce: %s", errMsg)
-	}
-	return nil, result, resp.StatusCode, nil
+	return nil, result, 200, nil
 }
 
 // get is a convenience wrapper for GET requests.
@@ -241,4 +229,18 @@ func (c *salesforceClient) getArray(path string) ([]any, map[string]any, error) 
 func (c *salesforceClient) postArray(path string, body any) ([]any, map[string]any, error) {
 	arr, obj, _, err := c.doArray(http.MethodPost, path, body)
 	return arr, obj, err
+}
+
+// extractStatusCode pulls an HTTP status code from SDK error types.
+func extractStatusCode(err error) int {
+	if apiErr, ok := err.(*types.APIError); ok {
+		return apiErr.StatusCode
+	}
+	if apiErrs, ok := err.(types.APIErrors); ok && len(apiErrs) > 0 {
+		return apiErrs[0].StatusCode
+	}
+	if authErr, ok := err.(*types.AuthError); ok {
+		return authErr.StatusCode
+	}
+	return 500
 }

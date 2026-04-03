@@ -3,6 +3,8 @@ package internal
 import (
 	"context"
 	"fmt"
+
+	"github.com/GoCodeAlone/workflow-plugin-salesforce/salesforce"
 )
 
 // salesforceModule creates a Salesforce REST client and registers it.
@@ -34,23 +36,30 @@ func (m *salesforceModule) Init() error {
 		return nil
 	}
 
-	// Otherwise use OAuth client credentials
+	// Otherwise use OAuth client credentials via the provider package
 	if clientID == "" || clientSecret == "" {
 		return fmt.Errorf("salesforce.provider %q: clientId and clientSecret are required (or provide accessToken + instanceUrl)", m.name)
 	}
-	if loginURL == "" {
-		loginURL = "https://login.salesforce.com"
+
+	cfg := salesforce.Config{
+		AuthType:     "client_credentials",
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		LoginURL:     loginURL,
+		InstanceURL:  instanceURL,
+		APIVersion:   apiVersion,
 	}
 
-	iURL, token, err := authenticateOAuth(loginURL, clientID, clientSecret)
+	provider, err := salesforce.NewProvider(context.Background(), cfg)
 	if err != nil {
 		return fmt.Errorf("salesforce.provider %q: auth failed: %w", m.name, err)
 	}
-	if instanceURL == "" {
-		instanceURL = iURL
+
+	if apiVersion == "" {
+		apiVersion = defaultAPIVersion
 	}
 
-	client := newSalesforceClient(instanceURL, token, apiVersion)
+	client := newSalesforceClientFromSDK(provider.Client, apiVersion)
 	RegisterClient(m.name, client)
 	return nil
 }

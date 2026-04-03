@@ -5,13 +5,23 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
+
+	sfhttp "github.com/PramithaMJ/salesforce/v2/http"
 )
 
 // newTestClient creates a salesforceClient pointing at the given test server.
 func newTestClient(srv *httptest.Server) *salesforceClient {
+	hc := sfhttp.NewClient(sfhttp.Config{
+		HTTPClient: srv.Client(),
+		APIVersion: strings.TrimPrefix(defaultAPIVersion, "v"),
+		MaxRetries: 0,
+	})
+	hc.SetBaseURL(srv.URL)
+	hc.SetAccessToken("test-token")
 	return &salesforceClient{
-		httpClient:  srv.Client(),
+		sdkHTTP:     hc,
 		instanceURL: srv.URL,
 		accessToken: "test-token",
 		apiVersion:  defaultAPIVersion,
