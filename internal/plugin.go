@@ -7,6 +7,10 @@ import (
 	sdk "github.com/GoCodeAlone/workflow/plugin/external/sdk"
 )
 
+// Version is set at build time via -ldflags
+// "-X github.com/GoCodeAlone/workflow-plugin-salesforce/internal.Version=X.Y.Z"
+var Version = "dev"
+
 // salesforcePlugin implements sdk.PluginProvider, sdk.ModuleProvider, and sdk.StepProvider.
 type salesforcePlugin struct{}
 
@@ -19,7 +23,7 @@ func NewSalesforcePlugin() sdk.PluginProvider {
 func (p *salesforcePlugin) Manifest() sdk.PluginManifest {
 	return sdk.PluginManifest{
 		Name:        "workflow-plugin-salesforce",
-		Version:     "0.1.0",
+		Version:     Version,
 		Author:      "GoCodeAlone",
 		Description: "Salesforce CRM platform plugin (~75 step types across all Salesforce REST APIs)",
 	}

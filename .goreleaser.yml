@@ -1,5 +1,11 @@
 version: 2
 project_name: workflow-plugin-salesforce
+
+before:
+  hooks:
+    - go mod tidy
+    - "sed -i.bak 's/\"version\": \".*\"/\"version\": \"{{ .Version }}\"/' plugin.json && rm -f plugin.json.bak"
+
 builds:
   - id: plugin
     main: ./cmd/workflow-plugin-salesforce
@@ -7,7 +13,7 @@ builds:
     env: [CGO_ENABLED=0]
     goos: [linux, darwin]
     goarch: [amd64, arm64]
-    ldflags: ["-s", "-w"]
+    ldflags: ["-s", "-w", "-X github.com/GoCodeAlone/workflow-plugin-salesforce/internal.Version={{.Version}}"]
 archives:
   - id: plugin
     builds: [plugin]
