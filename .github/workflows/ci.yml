@@ -18,6 +18,8 @@ jobs:
   wfctl-strict-contracts:
     name: Validate strict plugin contracts
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: Fail if plugin.json is missing

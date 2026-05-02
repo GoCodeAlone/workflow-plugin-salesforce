@@ -134,8 +134,8 @@
                     "key": "apiVersion",
                     "label": "API Version",
                     "type": "string",
-                    "description": "Salesforce REST API version (e.g. v60.0). Defaults to v60.0.",
-                    "defaultValue": "v60.0"
+                    "description": "Salesforce REST API version (e.g. v63.0). Defaults to v63.0.",
+                    "defaultValue": "v63.0"
                 }
             ]
         }
@@ -181,6 +181,7 @@
                 {"key": "fields", "label": "Fields", "type": "json", "description": "Map of field names to updated values.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the record was updated (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -196,8 +197,8 @@
                 {"key": "fields", "label": "Fields", "type": "json", "description": "Map of field names to values."}
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Salesforce record ID."},
-                {"key": "created", "type": "boolean", "description": "True if the record was created, false if updated."},
+                {"key": "id", "type": "string", "description": "Salesforce record ID (on create)."},
+                {"key": "success", "type": "boolean", "description": "Whether the upsert succeeded."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -211,6 +212,7 @@
                 {"key": "record_id", "label": "Record ID", "type": "string", "description": "18-character Salesforce record ID.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the record was deleted (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -644,7 +646,8 @@
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of report summary objects."},
+                {"key": "reports", "type": "array", "description": "Array of report summary objects."},
+                {"key": "count", "type": "number", "description": "Number of reports returned."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -684,7 +687,8 @@
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of dashboard summary objects."},
+                {"key": "dashboards", "type": "array", "description": "Array of dashboard summary objects."},
+                {"key": "count", "type": "number", "description": "Number of dashboards returned."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -732,8 +736,7 @@
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
                 {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the record to submit for approval.", "required": true},
-                {"key": "comment", "label": "Comment", "type": "string", "description": "Submitter comment."},
-                {"key": "next_approver_ids", "label": "Next Approver IDs", "type": "json", "description": "Array of user IDs to assign as the next approvers."}
+                {"key": "comments", "label": "Comments", "type": "string", "description": "Submitter comments."}
             ],
             "outputs": [
                 {"key": "success", "type": "boolean", "description": "Whether submission succeeded."},
@@ -747,8 +750,8 @@
             "description": "Approve a pending Salesforce approval request.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "instance_id", "label": "Instance ID", "type": "string", "description": "Approval process instance ID.", "required": true},
-                {"key": "comment", "label": "Comment", "type": "string", "description": "Approver comment."}
+                {"key": "work_item_id", "label": "Work Item ID", "type": "string", "description": "Approval work item ID.", "required": true},
+                {"key": "comments", "label": "Comments", "type": "string", "description": "Approver comments."}
             ],
             "outputs": [
                 {"key": "success", "type": "boolean", "description": "Whether the approval succeeded."},
@@ -761,8 +764,8 @@
             "description": "Reject a pending Salesforce approval request.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "instance_id", "label": "Instance ID", "type": "string", "description": "Approval process instance ID.", "required": true},
-                {"key": "comment", "label": "Comment", "type": "string", "description": "Rejection comment."}
+                {"key": "work_item_id", "label": "Work Item ID", "type": "string", "description": "Approval work item ID.", "required": true},
+                {"key": "comments", "label": "Comments", "type": "string", "description": "Rejection comments."}
             ],
             "outputs": [
                 {"key": "success", "type": "boolean", "description": "Whether the rejection succeeded."},
@@ -776,7 +779,7 @@
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
                 {"key": "subject_id", "label": "Subject ID", "type": "string", "description": "ID of the record or user feed to post to (use 'me' for the current user).", "required": true},
-                {"key": "message", "label": "Message", "type": "string", "description": "Text body of the Chatter post.", "required": true}
+                {"key": "text", "label": "Text", "type": "string", "description": "Text body of the Chatter post.", "required": true}
             ],
             "outputs": [
                 {"key": "id", "type": "string", "description": "ID of the created feed item."},
@@ -789,8 +792,8 @@
             "description": "Add a comment to an existing Salesforce Chatter feed item.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "feed_item_id", "label": "Feed Item ID", "type": "string", "description": "ID of the Chatter feed item to comment on.", "required": true},
-                {"key": "message", "label": "Message", "type": "string", "description": "Text body of the comment.", "required": true}
+                {"key": "feed_element_id", "label": "Feed Element ID", "type": "string", "description": "ID of the Chatter feed element to comment on.", "required": true},
+                {"key": "text", "label": "Text", "type": "string", "description": "Text body of the comment.", "required": true}
             ],
             "outputs": [
                 {"key": "id", "type": "string", "description": "ID of the created comment."},
@@ -803,7 +806,7 @@
             "description": "Like a Salesforce Chatter feed item.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "feed_item_id", "label": "Feed Item ID", "type": "string", "description": "ID of the Chatter feed item to like.", "required": true}
+                {"key": "feed_element_id", "label": "Feed Element ID", "type": "string", "description": "ID of the Chatter feed element to like.", "required": true}
             ],
             "outputs": [
                 {"key": "id", "type": "string", "description": "ID of the like record."},
@@ -813,14 +816,14 @@
         {
             "type": "step.salesforce_chatter_feed_list",
             "plugin": "workflow-plugin-salesforce",
-            "description": "List Chatter feed items for a record or user.",
+            "description": "List Chatter feed elements for the authenticated user by feed type.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "subject_id", "label": "Subject ID", "type": "string", "description": "ID of the record or user whose feed to list.", "required": true}
+                {"key": "feed_type", "label": "Feed Type", "type": "string", "description": "Chatter feed type (e.g. news, record, to). Defaults to 'news'.", "defaultValue": "news"}
             ],
             "outputs": [
+                {"key": "elements", "type": "array", "description": "Array of feed elements."},
                 {"key": "currentPageUrl", "type": "string", "description": "URL of the current page."},
-                {"key": "items", "type": "array", "description": "Array of feed items."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -832,8 +835,7 @@
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
                 {"key": "title", "label": "Title", "type": "string", "description": "Title (display name) of the file.", "required": true},
                 {"key": "path_on_client", "label": "Path on Client", "type": "string", "description": "Original file name including extension.", "required": true},
-                {"key": "version_data", "label": "Version Data", "type": "string", "description": "Base64-encoded file content.", "required": true},
-                {"key": "first_publish_location_id", "label": "First Publish Location ID", "type": "string", "description": "ID of the record to attach the file to."}
+                {"key": "file_content", "label": "File Content", "type": "string", "description": "Raw file content string; the step base64-encodes it before uploading.", "required": true}
             ],
             "outputs": [
                 {"key": "id", "type": "string", "description": "ContentVersion ID of the uploaded file."},
@@ -850,7 +852,6 @@
                 {"key": "content_version_id", "label": "ContentVersion ID", "type": "string", "description": "ID of the ContentVersion record to download.", "required": true}
             ],
             "outputs": [
-                {"key": "data", "type": "string", "description": "Base64-encoded file content."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -911,14 +912,14 @@
         {
             "type": "step.salesforce_user_list",
             "plugin": "workflow-plugin-salesforce",
-            "description": "Query Salesforce users matching a SOQL filter.",
+            "description": "Query Salesforce users with an optional SOQL WHERE filter.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "soql", "label": "SOQL Query", "type": "string", "description": "SOQL query to filter users (defaults to SELECT Id,Username,Email FROM User).", "defaultValue": "SELECT Id, Username, Email FROM User"}
+                {"key": "filter", "label": "Filter", "type": "string", "description": "Optional SOQL WHERE clause to filter users (e.g. IsActive = true)."}
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of User records."},
-                {"key": "total_size", "type": "number", "description": "Total number of matching users."},
+                {"key": "users", "type": "array", "description": "Array of User records (Id, Name, Email, Username, IsActive)."},
+                {"key": "count", "type": "number", "description": "Number of users returned."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
