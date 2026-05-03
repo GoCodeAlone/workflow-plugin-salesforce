@@ -107,8 +107,7 @@
                     "key": "clientId",
                     "label": "Client ID",
                     "type": "string",
-                    "description": "OAuth connected-app client ID. Required unless accessToken is provided.",
-                    "sensitive": true
+                    "description": "OAuth connected-app client ID. Required unless accessToken is provided."
                 },
                 {
                     "key": "clientSecret",
@@ -544,6 +543,7 @@
                 {"key": "fields", "label": "Fields", "type": "json", "description": "Field values to update.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the record was updated (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -557,6 +557,7 @@
                 {"key": "record_id", "label": "Record ID", "type": "string", "description": "Tooling API record ID.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the record was deleted (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -739,8 +740,8 @@
                 {"key": "comments", "label": "Comments", "type": "string", "description": "Submitter comments."}
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "Whether submission succeeded."},
-                {"key": "instanceId", "type": "string", "description": "Approval process instance ID."},
+                {"key": "hasErrors", "type": "boolean", "description": "True if the submission encountered errors."},
+                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -754,7 +755,8 @@
                 {"key": "comments", "label": "Comments", "type": "string", "description": "Approver comments."}
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "Whether the approval succeeded."},
+                {"key": "hasErrors", "type": "boolean", "description": "True if the approval encountered errors."},
+                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -768,7 +770,8 @@
                 {"key": "comments", "label": "Comments", "type": "string", "description": "Rejection comments."}
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "Whether the rejection succeeded."},
+                {"key": "hasErrors", "type": "boolean", "description": "True if the rejection encountered errors."},
+                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -834,7 +837,7 @@
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
                 {"key": "title", "label": "Title", "type": "string", "description": "Title (display name) of the file.", "required": true},
-                {"key": "path_on_client", "label": "Path on Client", "type": "string", "description": "Original file name including extension.", "required": true},
+                {"key": "path_on_client", "label": "Path on Client", "type": "string", "description": "Original file name including extension."},
                 {"key": "file_content", "label": "File Content", "type": "string", "description": "Raw file content string; the step base64-encodes it before uploading.", "required": true}
             ],
             "outputs": [
@@ -891,6 +894,7 @@
                 {"key": "document_id", "label": "Document ID", "type": "string", "description": "ContentDocument ID.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the document was deleted (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -947,6 +951,7 @@
                 {"key": "fields", "label": "Fields", "type": "json", "description": "User field values to update.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the user was updated (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -1081,6 +1086,7 @@
                 {"key": "fields", "label": "Fields", "type": "json", "description": "Metadata field values to update.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the metadata record was updated (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -1094,6 +1100,7 @@
                 {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the metadata record to delete.", "required": true}
             ],
             "outputs": [
+                {"key": "success", "type": "boolean", "description": "True when the metadata record was deleted (204 No Content response)."},
                 {"key": "error", "type": "string", "description": "Error message if the request failed."}
             ]
         },
@@ -1129,7 +1136,7 @@
             "description": "Send an arbitrary HTTP request to the Salesforce REST API.",
             "configFields": [
                 {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "method", "label": "HTTP Method", "type": "string", "description": "HTTP method to use (GET, POST, PATCH, PUT, DELETE).", "required": true},
+                {"key": "method", "label": "HTTP Method", "type": "string", "description": "HTTP method to use (GET, POST, PATCH, PUT, DELETE). Defaults to GET.", "defaultValue": "GET"},
                 {"key": "path", "label": "Path", "type": "string", "description": "API path relative to the instance URL and API version (e.g. /sobjects/Account).", "required": true},
                 {"key": "body", "label": "Request Body", "type": "json", "description": "JSON request body (for POST, PATCH, PUT)."}
             ],
