@@ -41,7 +41,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Fail if plugin.json is missing
-        run: test -f plugin.json || (echo "ERROR: plugin.json not found" && exit 1)
+        run: |
+          test -f plugin.json || (echo "ERROR: plugin.json not found" && exit 1)
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
