@@ -22,14 +22,14 @@ func (s *reportListStep) Execute(_ context.Context, _ map[string]any, _ map[stri
 	if !ok {
 		return &sdk.StepResult{Output: map[string]any{"error": "salesforce client not found: " + s.moduleName}}, nil
 	}
-	arr, obj, err := client.getArray("/analytics/reports")
+	arr, _, err := client.getArray("/analytics/reports")
 	if err != nil {
 		return &sdk.StepResult{Output: map[string]any{"error": err.Error()}}, nil
 	}
-	if arr != nil {
-		return &sdk.StepResult{Output: map[string]any{"reports": arr, "count": len(arr)}}, nil
+	if arr == nil {
+		arr = []any{}
 	}
-	return &sdk.StepResult{Output: obj}, nil
+	return &sdk.StepResult{Output: map[string]any{"reports": arr, "count": len(arr)}}, nil
 }
 
 // reportDescribeStep implements step.salesforce_report_describe
@@ -105,14 +105,14 @@ func (s *dashboardListStep) Execute(_ context.Context, _ map[string]any, _ map[s
 	if !ok {
 		return &sdk.StepResult{Output: map[string]any{"error": "salesforce client not found: " + s.moduleName}}, nil
 	}
-	arr, obj, err := client.getArray("/analytics/dashboards")
+	arr, _, err := client.getArray("/analytics/dashboards")
 	if err != nil {
 		return &sdk.StepResult{Output: map[string]any{"error": err.Error()}}, nil
 	}
-	if arr != nil {
-		return &sdk.StepResult{Output: map[string]any{"dashboards": arr, "count": len(arr)}}, nil
+	if arr == nil {
+		arr = []any{}
 	}
-	return &sdk.StepResult{Output: obj}, nil
+	return &sdk.StepResult{Output: map[string]any{"dashboards": arr, "count": len(arr)}}, nil
 }
 
 // dashboardDescribeStep implements step.salesforce_dashboard_describe
