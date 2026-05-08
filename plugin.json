@@ -89,6 +89,28 @@
         ],
         "triggerTypes": []
     },
+    "downloads": [
+        {
+            "os": "linux",
+            "arch": "amd64",
+            "url": "https://github.com/GoCodeAlone/workflow-plugin-salesforce/releases/download/v0.1.0/workflow-plugin-salesforce-linux-amd64.tar.gz"
+        },
+        {
+            "os": "linux",
+            "arch": "arm64",
+            "url": "https://github.com/GoCodeAlone/workflow-plugin-salesforce/releases/download/v0.1.0/workflow-plugin-salesforce-linux-arm64.tar.gz"
+        },
+        {
+            "os": "darwin",
+            "arch": "amd64",
+            "url": "https://github.com/GoCodeAlone/workflow-plugin-salesforce/releases/download/v0.1.0/workflow-plugin-salesforce-darwin-amd64.tar.gz"
+        },
+        {
+            "os": "darwin",
+            "arch": "arm64",
+            "url": "https://github.com/GoCodeAlone/workflow-plugin-salesforce/releases/download/v0.1.0/workflow-plugin-salesforce-darwin-arm64.tar.gz"
+        }
+    ],
     "moduleSchemas": [
         {
             "type": "salesforce.provider",
