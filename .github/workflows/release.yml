@@ -22,17 +22,24 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Sync manifest to registry
+      - name: Check out workflow-registry
+        if: success() && env.GH_TOKEN != ''
+        uses: actions/checkout@v6
+        with:
+          repository: GoCodeAlone/workflow-registry
+          token: ${{ secrets.REGISTRY_PAT }}
+          path: workflow-registry
+
+      - name: Update workflow-registry manifest
         if: success() && env.GH_TOKEN != ''
         continue-on-error: true
         run: |
-          auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
-          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" clone https://github.com/GoCodeAlone/workflow-registry.git /tmp/registry
-          mkdir -p /tmp/registry/plugins/salesforce
+          registry_dir="$GITHUB_WORKSPACE/workflow-registry"
+          mkdir -p "$registry_dir/plugins/salesforce"
           TAG=${GITHUB_REF#refs/tags/}
           VERSION=${TAG#v}
-          jq --arg v "$VERSION" '.version = $v' plugin.json > /tmp/registry/plugins/salesforce/manifest.json
-          cd /tmp/registry
+          jq --arg v "$VERSION" '.version = $v' plugin.json > "$registry_dir/plugins/salesforce/manifest.json"
+          cd "$registry_dir"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add plugins/salesforce/manifest.json
