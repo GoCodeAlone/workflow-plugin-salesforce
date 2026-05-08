@@ -48,6 +48,7 @@ jobs:
   sync-registry:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [publish-release]
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Check out plugin
@@ -68,7 +69,10 @@ jobs:
           mkdir -p "$registry_dir/plugins/salesforce"
           TAG=${GITHUB_REF#refs/tags/}
           VERSION=${TAG#v}
-          jq --arg v "$VERSION" '.version = $v' "$GITHUB_WORKSPACE/plugin/plugin.json" > "$registry_dir/plugins/salesforce/manifest.json"
+          jq --arg v "$VERSION" --arg tag "$TAG" '
+            .version = $v |
+            .downloads = ((.downloads // []) | map(.url |= sub("/releases/download/v[^/]+/"; "/releases/download/" + $tag + "/")))
+          ' "$GITHUB_WORKSPACE/plugin/plugin.json" > "$registry_dir/plugins/salesforce/manifest.json"
           cd "$registry_dir"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
