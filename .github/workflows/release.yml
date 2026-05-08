@@ -7,8 +7,6 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -22,47 +20,14 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check out workflow-registry
-        if: success() && env.GH_TOKEN != ''
-        uses: actions/checkout@v6
-        with:
-          repository: GoCodeAlone/workflow-registry
-          token: ${{ secrets.REGISTRY_PAT }}
-          path: workflow-registry
 
-      - name: Update workflow-registry manifest
-        if: success() && env.GH_TOKEN != ''
-        continue-on-error: true
-        run: |
-          registry_dir="$GITHUB_WORKSPACE/workflow-registry"
-          mkdir -p "$registry_dir/plugins/salesforce"
-          TAG=${GITHUB_REF#refs/tags/}
-          VERSION=${TAG#v}
-          jq --arg v "$VERSION" '.version = $v' plugin.json > "$registry_dir/plugins/salesforce/manifest.json"
-          cd "$registry_dir"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add plugins/salesforce/manifest.json
-          git diff --cached --quiet || git commit -m "chore: sync salesforce plugin manifest v${VERSION}"
-          git push
-
-  notify-registry:
+  publish-release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [release]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
     steps:
-      - name: Notify workflow-registry
-        if: env.GH_TOKEN != ''
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.REGISTRY_PAT }}
-          repository: GoCodeAlone/workflow-registry
-          event-type: plugin-release
-          client-payload: >-
-            {"plugin": "${{ github.repository }}", "tag": "${{ github.ref_name }}"}
-        continue-on-error: true
       - name: Publish GitHub release
         uses: actions/github-script@v7
         with:
@@ -79,3 +44,44 @@ jobs:
                 draft: false,
               });
             }
+
+  sync-registry:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [publish-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out plugin
+        uses: actions/checkout@v6
+        with:
+          path: plugin
+
+      - name: Check out workflow-registry
+        uses: actions/checkout@v6
+        with:
+          repository: GoCodeAlone/workflow-registry
+          token: ${{ secrets.REGISTRY_PAT }}
+          path: workflow-registry
+
+      - name: Update workflow-registry manifest
+        run: |
+          registry_dir="$GITHUB_WORKSPACE/workflow-registry"
+          mkdir -p "$registry_dir/plugins/salesforce"
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          jq --arg v "$VERSION" '.version = $v' "$GITHUB_WORKSPACE/plugin/plugin.json" > "$registry_dir/plugins/salesforce/manifest.json"
+          cd "$registry_dir"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plugins/salesforce/manifest.json
+          git diff --cached --quiet || git commit -m "chore: sync salesforce plugin manifest v${VERSION}"
+          git push
+
+      - name: Notify workflow-registry
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REGISTRY_PAT }}
+          repository: GoCodeAlone/workflow-registry
+          event-type: plugin-release
+          client-payload: >-
+            {"plugin": "${{ github.repository }}", "tag": "${{ github.ref_name }}"}
+        continue-on-error: true
