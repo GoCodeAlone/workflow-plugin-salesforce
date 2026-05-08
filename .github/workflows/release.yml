@@ -8,7 +8,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v6
@@ -51,19 +51,31 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
+      - name: Check registry token
+        id: registry-token
+        env:
+          REGISTRY_PAT: ${{ secrets.REGISTRY_PAT }}
+        run: |
+          if [ -n "$REGISTRY_PAT" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Check out plugin
-        uses: actions/checkout@v6
+        if: steps.registry-token.outputs.present == 'true'
+        uses: actions/checkout@v4
         with:
           path: plugin
 
       - name: Check out workflow-registry
-        uses: actions/checkout@v6
+        if: steps.registry-token.outputs.present == 'true'
+        uses: actions/checkout@v4
         with:
           repository: GoCodeAlone/workflow-registry
           token: ${{ secrets.REGISTRY_PAT }}
           path: workflow-registry
 
       - name: Update workflow-registry manifest
+        if: steps.registry-token.outputs.present == 'true'
         run: |
           registry_dir="$GITHUB_WORKSPACE/workflow-registry"
           mkdir -p "$registry_dir/plugins/salesforce"
@@ -81,6 +93,7 @@ jobs:
           git push
 
       - name: Notify workflow-registry
+        if: steps.registry-token.outputs.present == 'true'
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.REGISTRY_PAT }}
