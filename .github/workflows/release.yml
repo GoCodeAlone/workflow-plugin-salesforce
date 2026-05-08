@@ -21,12 +21,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Sync manifest to registry
-        if: success() && env.GH_TOKEN != ''
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
         run: |
-          git clone "https://x-access-token:${GH_TOKEN}@github.com/GoCodeAlone/workflow-registry.git" /tmp/registry
+          auth_header="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 | tr -d '\n')"
+          git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" clone https://github.com/GoCodeAlone/workflow-registry.git /tmp/registry
           mkdir -p /tmp/registry/plugins/salesforce
           TAG=${GITHUB_REF#refs/tags/}
           VERSION=${TAG#v}
@@ -44,7 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify workflow-registry
-        if: env.GH_TOKEN != ''
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.REGISTRY_PAT }}
@@ -58,9 +57,9 @@ jobs:
       - name: Publish GitHub release
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.RELEASES_TOKEN || github.token }}
+          github-token: ${{ github.token }}
           script: |
-            const tag = context.ref.replace('refs/tags/', '');
+            const tag = process.env.GITHUB_REF_NAME;
             const { owner, repo } = context.repo;
             const { data: release } = await github.rest.repos.getReleaseByTag({ owner, repo, tag });
             if (release.draft) {
