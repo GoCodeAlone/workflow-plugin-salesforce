@@ -26,7 +26,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
         run: |
-          git clone https://x-access-token:${GH_TOKEN}@github.com/GoCodeAlone/workflow-registry.git /tmp/registry
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/GoCodeAlone/workflow-registry.git" /tmp/registry
           mkdir -p /tmp/registry/plugins/salesforce
           TAG=${GITHUB_REF#refs/tags/}
           VERSION=${TAG#v}
@@ -55,3 +55,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REGISTRY_PAT }}
         continue-on-error: true
+      - name: Publish GitHub release
+        if: ${{ success() }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release edit "${{ github.ref_name }}" --draft=false --repo "${{ github.repository }}"
