@@ -18,7 +18,7 @@ message SalesforceProviderConfig {
   string access_token = 4;
   // instance_url is the SF instance URL (required when using access_token).
   string instance_url = 5;
-  // api_version is the SF API version (default: v58.0).
+  // api_version is the SF API version (default: v63.0).
   string api_version = 6;
 }
 

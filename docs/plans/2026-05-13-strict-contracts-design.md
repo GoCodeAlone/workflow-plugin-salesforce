@@ -56,7 +56,7 @@ message SalesforceProviderConfig {
   string client_secret = 3;  // OAuth client secret
   string access_token  = 4;  // Direct access token (alternative to OAuth)
   string instance_url  = 5;  // SF instance URL (required with access_token)
-  string api_version   = 6;  // SF API version (default: v58.0)
+  string api_version   = 6;  // SF API version (default: v63.0)
 }
 
 // SalesforceStepInput carries dynamic runtime inputs for any salesforce step.

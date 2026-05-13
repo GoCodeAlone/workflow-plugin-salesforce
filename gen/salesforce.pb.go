@@ -36,7 +36,7 @@ type SalesforceProviderConfig struct {
 	AccessToken string `protobuf:"bytes,4,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
 	// instance_url is the SF instance URL (required when using access_token).
 	InstanceUrl string `protobuf:"bytes,5,opt,name=instance_url,json=instanceUrl,proto3" json:"instance_url,omitempty"`
-	// api_version is the SF API version (default: v58.0).
+	// api_version is the SF API version (default: v63.0).
 	ApiVersion    string `protobuf:"bytes,6,opt,name=api_version,json=apiVersion,proto3" json:"api_version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
