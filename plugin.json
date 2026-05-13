@@ -1,18 +1,24 @@
 {
     "name": "workflow-plugin-salesforce",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Salesforce CRM plugin",
     "author": "GoCodeAlone",
     "license": "MIT",
     "type": "external",
     "tier": "community",
-    "minEngineVersion": "0.3.30",
-    "keywords": ["salesforce", "crm", "soql"],
+    "minEngineVersion": "0.51.7",
+    "keywords": [
+        "salesforce",
+        "crm",
+        "soql"
+    ],
     "homepage": "https://github.com/GoCodeAlone/workflow-plugin-salesforce",
     "repository": "https://github.com/GoCodeAlone/workflow-plugin-salesforce",
     "capabilities": {
         "configProvider": false,
-        "moduleTypes": ["salesforce.provider"],
+        "moduleTypes": [
+            "salesforce.provider"
+        ],
         "stepTypes": [
             "step.salesforce_record_get",
             "step.salesforce_record_create",
@@ -167,13 +173,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve a single Salesforce SObject record by ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name (e.g. Account, Contact).", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "18-character Salesforce record ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name (e.g. Account, Contact).",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "18-character Salesforce record ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "Id", "type": "string", "description": "Salesforce record ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "Id",
+                    "type": "string",
+                    "description": "Salesforce record ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -181,14 +213,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a new Salesforce SObject record.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Map of field names to values for the new record.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Map of field names to values for the new record.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the newly created record."},
-                {"key": "success", "type": "boolean", "description": "Whether the record was created successfully."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the newly created record."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether the record was created successfully."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -196,14 +258,46 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Update an existing Salesforce SObject record.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "18-character Salesforce record ID.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Map of field names to updated values.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "18-character Salesforce record ID.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Map of field names to updated values.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the record was updated (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the record was updated (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -211,16 +305,57 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Upsert a Salesforce SObject record using an external ID field.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "external_id_field", "label": "External ID Field", "type": "string", "description": "API name of the external ID field.", "required": true},
-                {"key": "external_id_value", "label": "External ID Value", "type": "string", "description": "Value of the external ID field.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Map of field names to values."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "external_id_field",
+                    "label": "External ID Field",
+                    "type": "string",
+                    "description": "API name of the external ID field.",
+                    "required": true
+                },
+                {
+                    "key": "external_id_value",
+                    "label": "External ID Value",
+                    "type": "string",
+                    "description": "Value of the external ID field.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Map of field names to values."
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Salesforce record ID (on create)."},
-                {"key": "success", "type": "boolean", "description": "Whether the upsert succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Salesforce record ID (on create)."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether the upsert succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -228,13 +363,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Delete a Salesforce SObject record by ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "18-character Salesforce record ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "18-character Salesforce record ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the record was deleted (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the record was deleted (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -242,13 +403,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Describe the metadata of a Salesforce SObject type.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name to describe.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name to describe.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "name", "type": "string", "description": "SObject API name."},
-                {"key": "fields", "type": "array", "description": "List of field descriptors."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "name",
+                    "type": "string",
+                    "description": "SObject API name."
+                },
+                {
+                    "key": "fields",
+                    "type": "array",
+                    "description": "List of field descriptors."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -256,11 +441,25 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all available Salesforce SObject types.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "sobjects", "type": "array", "description": "List of SObject descriptors."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "sobjects",
+                    "type": "array",
+                    "description": "List of SObject descriptors."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -268,15 +467,47 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute a SOQL query against Salesforce.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "soql", "label": "SOQL Query", "type": "string", "description": "The SOQL query string to execute.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "soql",
+                    "label": "SOQL Query",
+                    "type": "string",
+                    "description": "The SOQL query string to execute.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of matching records."},
-                {"key": "total_size", "type": "number", "description": "Total number of matching records."},
-                {"key": "done", "type": "boolean", "description": "Whether all records were returned."},
-                {"key": "next_url", "type": "string", "description": "URL to fetch the next page of results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of matching records."
+                },
+                {
+                    "key": "total_size",
+                    "type": "number",
+                    "description": "Total number of matching records."
+                },
+                {
+                    "key": "done",
+                    "type": "boolean",
+                    "description": "Whether all records were returned."
+                },
+                {
+                    "key": "next_url",
+                    "type": "string",
+                    "description": "URL to fetch the next page of results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -284,15 +515,47 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute a SOQL query that includes deleted and archived records.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "soql", "label": "SOQL Query", "type": "string", "description": "The SOQL query string to execute.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "soql",
+                    "label": "SOQL Query",
+                    "type": "string",
+                    "description": "The SOQL query string to execute.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of matching records."},
-                {"key": "total_size", "type": "number", "description": "Total number of matching records."},
-                {"key": "done", "type": "boolean", "description": "Whether all records were returned."},
-                {"key": "next_url", "type": "string", "description": "URL to fetch the next page of results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of matching records."
+                },
+                {
+                    "key": "total_size",
+                    "type": "number",
+                    "description": "Total number of matching records."
+                },
+                {
+                    "key": "done",
+                    "type": "boolean",
+                    "description": "Whether all records were returned."
+                },
+                {
+                    "key": "next_url",
+                    "type": "string",
+                    "description": "URL to fetch the next page of results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -300,12 +563,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute a SOSL search query against Salesforce.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sosl", "label": "SOSL Query", "type": "string", "description": "The SOSL search string to execute.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sosl",
+                    "label": "SOSL Query",
+                    "type": "string",
+                    "description": "The SOSL search string to execute.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "searchRecords", "type": "array", "description": "Array of matching records across objects."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "searchRecords",
+                    "type": "array",
+                    "description": "Array of matching records across objects."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -313,13 +596,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Insert multiple SObject records in a single Collections API request.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "records", "label": "Records", "type": "json", "description": "Array of record objects to insert.", "required": true},
-                {"key": "all_or_none", "label": "All or None", "type": "boolean", "description": "If true, roll back all inserts on any failure."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "records",
+                    "label": "Records",
+                    "type": "json",
+                    "description": "Array of record objects to insert.",
+                    "required": true
+                },
+                {
+                    "key": "all_or_none",
+                    "label": "All or None",
+                    "type": "boolean",
+                    "description": "If true, roll back all inserts on any failure."
+                }
             ],
             "outputs": [
-                {"key": "results", "type": "array", "description": "Array of per-record results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of per-record results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -327,13 +635,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Update multiple SObject records in a single Collections API request.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "records", "label": "Records", "type": "json", "description": "Array of record objects (must include Id) to update.", "required": true},
-                {"key": "all_or_none", "label": "All or None", "type": "boolean", "description": "If true, roll back all updates on any failure."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "records",
+                    "label": "Records",
+                    "type": "json",
+                    "description": "Array of record objects (must include Id) to update.",
+                    "required": true
+                },
+                {
+                    "key": "all_or_none",
+                    "label": "All or None",
+                    "type": "boolean",
+                    "description": "If true, roll back all updates on any failure."
+                }
             ],
             "outputs": [
-                {"key": "results", "type": "array", "description": "Array of per-record results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of per-record results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -341,15 +674,52 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Upsert multiple SObject records via the Collections API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "external_id_field", "label": "External ID Field", "type": "string", "description": "API name of the external ID field.", "required": true},
-                {"key": "records", "label": "Records", "type": "json", "description": "Array of record objects to upsert.", "required": true},
-                {"key": "all_or_none", "label": "All or None", "type": "boolean", "description": "If true, roll back all upserts on any failure."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "external_id_field",
+                    "label": "External ID Field",
+                    "type": "string",
+                    "description": "API name of the external ID field.",
+                    "required": true
+                },
+                {
+                    "key": "records",
+                    "label": "Records",
+                    "type": "json",
+                    "description": "Array of record objects to upsert.",
+                    "required": true
+                },
+                {
+                    "key": "all_or_none",
+                    "label": "All or None",
+                    "type": "boolean",
+                    "description": "If true, roll back all upserts on any failure."
+                }
             ],
             "outputs": [
-                {"key": "results", "type": "array", "description": "Array of per-record results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of per-record results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -357,13 +727,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Delete multiple SObject records via the Collections API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "ids", "label": "Record IDs", "type": "json", "description": "Array of Salesforce record IDs to delete.", "required": true},
-                {"key": "all_or_none", "label": "All or None", "type": "boolean", "description": "If true, roll back all deletes on any failure."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "ids",
+                    "label": "Record IDs",
+                    "type": "json",
+                    "description": "Array of Salesforce record IDs to delete.",
+                    "required": true
+                },
+                {
+                    "key": "all_or_none",
+                    "label": "All or None",
+                    "type": "boolean",
+                    "description": "If true, roll back all deletes on any failure."
+                }
             ],
             "outputs": [
-                {"key": "results", "type": "array", "description": "Array of per-record results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of per-record results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -371,13 +766,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute a Composite API request containing multiple subrequests.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "composite_request", "label": "Composite Request", "type": "json", "description": "Array of subrequest objects.", "required": true},
-                {"key": "all_or_none", "label": "All or None", "type": "boolean", "description": "If true, roll back all subrequests on any failure."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "composite_request",
+                    "label": "Composite Request",
+                    "type": "json",
+                    "description": "Array of subrequest objects.",
+                    "required": true
+                },
+                {
+                    "key": "all_or_none",
+                    "label": "All or None",
+                    "type": "boolean",
+                    "description": "If true, roll back all subrequests on any failure."
+                }
             ],
             "outputs": [
-                {"key": "compositeResponse", "type": "array", "description": "Array of subrequest responses."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "compositeResponse",
+                    "type": "array",
+                    "description": "Array of subrequest responses."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -385,14 +805,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a tree of related SObject records in a single Composite Tree request.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Root SObject API name.", "required": true},
-                {"key": "records", "label": "Records", "type": "json", "description": "Array of root record objects with nested children.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Root SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "records",
+                    "label": "Records",
+                    "type": "json",
+                    "description": "Array of root record objects with nested children.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "hasErrors", "type": "boolean", "description": "Whether any record had errors."},
-                {"key": "results", "type": "array", "description": "Per-record creation results."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "hasErrors",
+                    "type": "boolean",
+                    "description": "Whether any record had errors."
+                },
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Per-record creation results."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -400,13 +850,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Bulk API v2 ingest job for inserting records.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Job state (e.g. Open)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state (e.g. Open)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -414,13 +888,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Bulk API v2 ingest job for updating records.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Job state."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -428,14 +926,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Bulk API v2 ingest job for upserting records.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true},
-                {"key": "external_id_field", "label": "External ID Field", "type": "string", "description": "API name of the external ID field used for upsert matching."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                },
+                {
+                    "key": "external_id_field",
+                    "label": "External ID Field",
+                    "type": "string",
+                    "description": "API name of the external ID field used for upsert matching."
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Job state."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -443,13 +970,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Bulk API v2 ingest job for deleting records.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Salesforce SObject API name.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Salesforce SObject API name.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Job state."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -457,13 +1008,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Bulk API v2 query job.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "soql", "label": "SOQL Query", "type": "string", "description": "SOQL query to execute as a bulk query job.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "soql",
+                    "label": "SOQL Query",
+                    "type": "string",
+                    "description": "SOQL query to execute as a bulk query job.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk query job ID."},
-                {"key": "state", "type": "string", "description": "Job state."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk query job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -471,13 +1046,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve results from a completed Bulk API v2 query job.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "job_id", "label": "Job ID", "type": "string", "description": "ID of the completed bulk query job.", "required": true},
-                {"key": "max_records", "label": "Max Records", "type": "number", "description": "Maximum number of records to return."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "job_id",
+                    "label": "Job ID",
+                    "type": "string",
+                    "description": "ID of the completed bulk query job.",
+                    "required": true
+                },
+                {
+                    "key": "max_records",
+                    "label": "Max Records",
+                    "type": "number",
+                    "description": "Maximum number of records to return."
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of result records."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of result records."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -485,14 +1085,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Get the status of a Bulk API v2 job.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "job_id", "label": "Job ID", "type": "string", "description": "ID of the bulk job.", "required": true},
-                {"key": "job_type", "label": "Job Type", "type": "string", "description": "Job type: 'ingest' (default) or 'query'.", "defaultValue": "ingest"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "job_id",
+                    "label": "Job ID",
+                    "type": "string",
+                    "description": "ID of the bulk job.",
+                    "required": true
+                },
+                {
+                    "key": "job_type",
+                    "label": "Job Type",
+                    "type": "string",
+                    "description": "Job type: 'ingest' (default) or 'query'.",
+                    "defaultValue": "ingest"
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Job state (e.g. InProgress, JobComplete, Failed)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Job state (e.g. InProgress, JobComplete, Failed)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -500,14 +1130,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Abort a running Bulk API v2 job.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "job_id", "label": "Job ID", "type": "string", "description": "ID of the bulk job to abort.", "required": true},
-                {"key": "job_type", "label": "Job Type", "type": "string", "description": "Job type: 'ingest' (default) or 'query'.", "defaultValue": "ingest"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "job_id",
+                    "label": "Job ID",
+                    "type": "string",
+                    "description": "ID of the bulk job to abort.",
+                    "required": true
+                },
+                {
+                    "key": "job_type",
+                    "label": "Job Type",
+                    "type": "string",
+                    "description": "Job type: 'ingest' (default) or 'query'.",
+                    "defaultValue": "ingest"
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Bulk job ID."},
-                {"key": "state", "type": "string", "description": "Updated job state (Aborted)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Bulk job ID."
+                },
+                {
+                    "key": "state",
+                    "type": "string",
+                    "description": "Updated job state (Aborted)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -515,14 +1175,42 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute a SOQL query via the Salesforce Tooling API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "soql", "label": "SOQL Query", "type": "string", "description": "SOQL query to execute against the Tooling API.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "soql",
+                    "label": "SOQL Query",
+                    "type": "string",
+                    "description": "SOQL query to execute against the Tooling API.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of matching Tooling API records."},
-                {"key": "totalSize", "type": "number", "description": "Total number of matching records."},
-                {"key": "done", "type": "boolean", "description": "Whether all records were returned."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of matching Tooling API records."
+                },
+                {
+                    "key": "totalSize",
+                    "type": "number",
+                    "description": "Total number of matching records."
+                },
+                {
+                    "key": "done",
+                    "type": "boolean",
+                    "description": "Whether all records were returned."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -530,13 +1218,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Get a single Tooling API SObject record by ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Tooling API SObject type name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "Tooling API record ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Tooling API SObject type name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "Tooling API record ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "Id", "type": "string", "description": "Record ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "Id",
+                    "type": "string",
+                    "description": "Record ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -544,14 +1258,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a Tooling API SObject record.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Tooling API SObject type name.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Field values for the new Tooling API record.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Tooling API SObject type name.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Field values for the new Tooling API record.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the newly created record."},
-                {"key": "success", "type": "boolean", "description": "Whether creation succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the newly created record."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether creation succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -559,14 +1303,46 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Update a Tooling API SObject record.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Tooling API SObject type name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "Tooling API record ID.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Field values to update.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Tooling API SObject type name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "Tooling API record ID.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Field values to update.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the record was updated (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the record was updated (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -574,13 +1350,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Delete a Tooling API SObject record.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "sobject_type", "label": "SObject Type", "type": "string", "description": "Tooling API SObject type name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "Tooling API record ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "sobject_type",
+                    "label": "SObject Type",
+                    "type": "string",
+                    "description": "Tooling API SObject type name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "Tooling API record ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the record was deleted (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the record was deleted (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -588,14 +1390,42 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Execute anonymous Apex code via the Tooling API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_code", "label": "Apex Code", "type": "string", "description": "Anonymous Apex code to execute.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_code",
+                    "label": "Apex Code",
+                    "type": "string",
+                    "description": "Anonymous Apex code to execute.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "Whether execution succeeded."},
-                {"key": "compiled", "type": "boolean", "description": "Whether the Apex code compiled successfully."},
-                {"key": "exceptionMessage", "type": "string", "description": "Exception message if execution failed."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether execution succeeded."
+                },
+                {
+                    "key": "compiled",
+                    "type": "boolean",
+                    "description": "Whether the Apex code compiled successfully."
+                },
+                {
+                    "key": "exceptionMessage",
+                    "type": "string",
+                    "description": "Exception message if execution failed."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -603,11 +1433,27 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a custom Apex REST endpoint with GET.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_path", "label": "Apex Path", "type": "string", "description": "Apex REST resource path (e.g. /MyResource/recordId).", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_path",
+                    "label": "Apex Path",
+                    "type": "string",
+                    "description": "Apex REST resource path (e.g. /MyResource/recordId).",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -615,12 +1461,33 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a custom Apex REST endpoint with POST.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_path", "label": "Apex Path", "type": "string", "description": "Apex REST resource path.", "required": true},
-                {"key": "body", "label": "Request Body", "type": "json", "description": "JSON request body to send."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_path",
+                    "label": "Apex Path",
+                    "type": "string",
+                    "description": "Apex REST resource path.",
+                    "required": true
+                },
+                {
+                    "key": "body",
+                    "label": "Request Body",
+                    "type": "json",
+                    "description": "JSON request body to send."
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -628,12 +1495,33 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a custom Apex REST endpoint with PATCH.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_path", "label": "Apex Path", "type": "string", "description": "Apex REST resource path.", "required": true},
-                {"key": "body", "label": "Request Body", "type": "json", "description": "JSON request body to send."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_path",
+                    "label": "Apex Path",
+                    "type": "string",
+                    "description": "Apex REST resource path.",
+                    "required": true
+                },
+                {
+                    "key": "body",
+                    "label": "Request Body",
+                    "type": "json",
+                    "description": "JSON request body to send."
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -641,12 +1529,33 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a custom Apex REST endpoint with PUT.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_path", "label": "Apex Path", "type": "string", "description": "Apex REST resource path.", "required": true},
-                {"key": "body", "label": "Request Body", "type": "json", "description": "JSON request body to send."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_path",
+                    "label": "Apex Path",
+                    "type": "string",
+                    "description": "Apex REST resource path.",
+                    "required": true
+                },
+                {
+                    "key": "body",
+                    "label": "Request Body",
+                    "type": "json",
+                    "description": "JSON request body to send."
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -654,11 +1563,27 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a custom Apex REST endpoint with DELETE.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "apex_path", "label": "Apex Path", "type": "string", "description": "Apex REST resource path.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "apex_path",
+                    "label": "Apex Path",
+                    "type": "string",
+                    "description": "Apex REST resource path.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -666,12 +1591,30 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all Salesforce reports visible to the running user.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "reports", "type": "array", "description": "Array of report summary objects."},
-                {"key": "count", "type": "number", "description": "Number of reports returned."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "reports",
+                    "type": "array",
+                    "description": "Array of report summary objects."
+                },
+                {
+                    "key": "count",
+                    "type": "number",
+                    "description": "Number of reports returned."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -679,12 +1622,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Describe the metadata and structure of a Salesforce report.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "report_id", "label": "Report ID", "type": "string", "description": "Salesforce report ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "report_id",
+                    "label": "Report ID",
+                    "type": "string",
+                    "description": "Salesforce report ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "reportMetadata", "type": "json", "description": "Report metadata descriptor."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "reportMetadata",
+                    "type": "json",
+                    "description": "Report metadata descriptor."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -692,14 +1655,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Run a Salesforce report and return its results.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "report_id", "label": "Report ID", "type": "string", "description": "Salesforce report ID.", "required": true},
-                {"key": "include_details", "label": "Include Details", "type": "boolean", "description": "Whether to include detail rows in results."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "report_id",
+                    "label": "Report ID",
+                    "type": "string",
+                    "description": "Salesforce report ID.",
+                    "required": true
+                },
+                {
+                    "key": "include_details",
+                    "label": "Include Details",
+                    "type": "boolean",
+                    "description": "Whether to include detail rows in results."
+                }
             ],
             "outputs": [
-                {"key": "factMap", "type": "json", "description": "Report fact map with row-level data."},
-                {"key": "reportMetadata", "type": "json", "description": "Report metadata."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "factMap",
+                    "type": "json",
+                    "description": "Report fact map with row-level data."
+                },
+                {
+                    "key": "reportMetadata",
+                    "type": "json",
+                    "description": "Report metadata."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -707,12 +1699,30 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all Salesforce dashboards visible to the running user.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "dashboards", "type": "array", "description": "Array of dashboard summary objects."},
-                {"key": "count", "type": "number", "description": "Number of dashboards returned."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "dashboards",
+                    "type": "array",
+                    "description": "Array of dashboard summary objects."
+                },
+                {
+                    "key": "count",
+                    "type": "number",
+                    "description": "Number of dashboards returned."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -720,12 +1730,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Describe the metadata and components of a Salesforce dashboard.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "dashboard_id", "label": "Dashboard ID", "type": "string", "description": "Salesforce dashboard ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "dashboard_id",
+                    "label": "Dashboard ID",
+                    "type": "string",
+                    "description": "Salesforce dashboard ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "components", "type": "array", "description": "List of dashboard component descriptors."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "components",
+                    "type": "array",
+                    "description": "List of dashboard component descriptors."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -733,11 +1763,27 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Refresh the data for a Salesforce dashboard.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "dashboard_id", "label": "Dashboard ID", "type": "string", "description": "Salesforce dashboard ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "dashboard_id",
+                    "label": "Dashboard ID",
+                    "type": "string",
+                    "description": "Salesforce dashboard ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -745,11 +1791,25 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all approval processes defined in the Salesforce org.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "approvals", "type": "json", "description": "Map of SObject type to its approval process list."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "approvals",
+                    "type": "json",
+                    "description": "Map of SObject type to its approval process list."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -757,14 +1817,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Submit a Salesforce record for approval.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the record to submit for approval.", "required": true},
-                {"key": "comments", "label": "Comments", "type": "string", "description": "Submitter comments."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "ID of the record to submit for approval.",
+                    "required": true
+                },
+                {
+                    "key": "comments",
+                    "label": "Comments",
+                    "type": "string",
+                    "description": "Submitter comments."
+                }
             ],
             "outputs": [
-                {"key": "hasErrors", "type": "boolean", "description": "True if the submission encountered errors."},
-                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "hasErrors",
+                    "type": "boolean",
+                    "description": "True if the submission encountered errors."
+                },
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -772,14 +1861,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Approve a pending Salesforce approval request.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "work_item_id", "label": "Work Item ID", "type": "string", "description": "Approval work item ID.", "required": true},
-                {"key": "comments", "label": "Comments", "type": "string", "description": "Approver comments."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "work_item_id",
+                    "label": "Work Item ID",
+                    "type": "string",
+                    "description": "Approval work item ID.",
+                    "required": true
+                },
+                {
+                    "key": "comments",
+                    "label": "Comments",
+                    "type": "string",
+                    "description": "Approver comments."
+                }
             ],
             "outputs": [
-                {"key": "hasErrors", "type": "boolean", "description": "True if the approval encountered errors."},
-                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "hasErrors",
+                    "type": "boolean",
+                    "description": "True if the approval encountered errors."
+                },
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -787,14 +1905,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Reject a pending Salesforce approval request.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "work_item_id", "label": "Work Item ID", "type": "string", "description": "Approval work item ID.", "required": true},
-                {"key": "comments", "label": "Comments", "type": "string", "description": "Rejection comments."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "work_item_id",
+                    "label": "Work Item ID",
+                    "type": "string",
+                    "description": "Approval work item ID.",
+                    "required": true
+                },
+                {
+                    "key": "comments",
+                    "label": "Comments",
+                    "type": "string",
+                    "description": "Rejection comments."
+                }
             ],
             "outputs": [
-                {"key": "hasErrors", "type": "boolean", "description": "True if the rejection encountered errors."},
-                {"key": "results", "type": "array", "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "hasErrors",
+                    "type": "boolean",
+                    "description": "True if the rejection encountered errors."
+                },
+                {
+                    "key": "results",
+                    "type": "array",
+                    "description": "Array of approval request results, each containing instanceId, instanceStatus, entityId, and success."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -802,13 +1949,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Post a message to a Salesforce Chatter feed.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "subject_id", "label": "Subject ID", "type": "string", "description": "ID of the record or user feed to post to (use 'me' for the current user).", "required": true},
-                {"key": "text", "label": "Text", "type": "string", "description": "Text body of the Chatter post.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "subject_id",
+                    "label": "Subject ID",
+                    "type": "string",
+                    "description": "ID of the record or user feed to post to (use 'me' for the current user).",
+                    "required": true
+                },
+                {
+                    "key": "text",
+                    "label": "Text",
+                    "type": "string",
+                    "description": "Text body of the Chatter post.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the created feed item."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the created feed item."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -816,13 +1989,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Add a comment to an existing Salesforce Chatter feed item.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "feed_element_id", "label": "Feed Element ID", "type": "string", "description": "ID of the Chatter feed element to comment on.", "required": true},
-                {"key": "text", "label": "Text", "type": "string", "description": "Text body of the comment.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "feed_element_id",
+                    "label": "Feed Element ID",
+                    "type": "string",
+                    "description": "ID of the Chatter feed element to comment on.",
+                    "required": true
+                },
+                {
+                    "key": "text",
+                    "label": "Text",
+                    "type": "string",
+                    "description": "Text body of the comment.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the created comment."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the created comment."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -830,12 +2029,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Like a Salesforce Chatter feed item.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "feed_element_id", "label": "Feed Element ID", "type": "string", "description": "ID of the Chatter feed element to like.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "feed_element_id",
+                    "label": "Feed Element ID",
+                    "type": "string",
+                    "description": "ID of the Chatter feed element to like.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the like record."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the like record."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -843,13 +2062,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List Chatter feed elements for the authenticated user by feed type.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "feed_type", "label": "Feed Type", "type": "string", "description": "Chatter feed type (e.g. news, record, to). Defaults to 'news'.", "defaultValue": "news"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "feed_type",
+                    "label": "Feed Type",
+                    "type": "string",
+                    "description": "Chatter feed type (e.g. news, record, to). Defaults to 'news'.",
+                    "defaultValue": "news"
+                }
             ],
             "outputs": [
-                {"key": "elements", "type": "array", "description": "Array of feed elements."},
-                {"key": "currentPageUrl", "type": "string", "description": "URL of the current page."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "elements",
+                    "type": "array",
+                    "description": "Array of feed elements."
+                },
+                {
+                    "key": "currentPageUrl",
+                    "type": "string",
+                    "description": "URL of the current page."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -857,15 +2100,50 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Upload a file to Salesforce as a ContentVersion.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "title", "label": "Title", "type": "string", "description": "Title (display name) of the file.", "required": true},
-                {"key": "path_on_client", "label": "Path on Client", "type": "string", "description": "Original file name including extension."},
-                {"key": "file_content", "label": "File Content", "type": "string", "description": "Raw file content string; the step base64-encodes it before uploading.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "title",
+                    "label": "Title",
+                    "type": "string",
+                    "description": "Title (display name) of the file.",
+                    "required": true
+                },
+                {
+                    "key": "path_on_client",
+                    "label": "Path on Client",
+                    "type": "string",
+                    "description": "Original file name including extension."
+                },
+                {
+                    "key": "file_content",
+                    "label": "File Content",
+                    "type": "string",
+                    "description": "Raw file content string; the step base64-encodes it before uploading.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ContentVersion ID of the uploaded file."},
-                {"key": "success", "type": "boolean", "description": "Whether the upload succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ContentVersion ID of the uploaded file."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether the upload succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -873,11 +2151,27 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Download a file from Salesforce by ContentVersion ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "content_version_id", "label": "ContentVersion ID", "type": "string", "description": "ID of the ContentVersion record to download.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "content_version_id",
+                    "label": "ContentVersion ID",
+                    "type": "string",
+                    "description": "ID of the ContentVersion record to download.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -885,13 +2179,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a new ContentVersion record (file version) in Salesforce.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "ContentVersion field values (Title, PathOnClient, VersionData, etc.).", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "ContentVersion field values (Title, PathOnClient, VersionData, etc.).",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ContentVersion ID."},
-                {"key": "success", "type": "boolean", "description": "Whether creation succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ContentVersion ID."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether creation succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -899,12 +2217,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve a ContentDocument record by ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "document_id", "label": "Document ID", "type": "string", "description": "ContentDocument ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "document_id",
+                    "label": "Document ID",
+                    "type": "string",
+                    "description": "ContentDocument ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "Id", "type": "string", "description": "ContentDocument ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "Id",
+                    "type": "string",
+                    "description": "ContentDocument ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -912,12 +2250,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Delete a ContentDocument and all its versions from Salesforce.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "document_id", "label": "Document ID", "type": "string", "description": "ContentDocument ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "document_id",
+                    "label": "Document ID",
+                    "type": "string",
+                    "description": "ContentDocument ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the document was deleted (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the document was deleted (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -925,14 +2283,42 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve a Salesforce User record by ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "user_id", "label": "User ID", "type": "string", "description": "Salesforce User record ID.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "user_id",
+                    "label": "User ID",
+                    "type": "string",
+                    "description": "Salesforce User record ID.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "Id", "type": "string", "description": "User record ID."},
-                {"key": "Username", "type": "string", "description": "Salesforce username."},
-                {"key": "Email", "type": "string", "description": "User email address."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "Id",
+                    "type": "string",
+                    "description": "User record ID."
+                },
+                {
+                    "key": "Username",
+                    "type": "string",
+                    "description": "Salesforce username."
+                },
+                {
+                    "key": "Email",
+                    "type": "string",
+                    "description": "User email address."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -940,13 +2326,36 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Query Salesforce users with an optional SOQL WHERE filter.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "filter", "label": "Filter", "type": "string", "description": "Optional SOQL WHERE clause to filter users (e.g. IsActive = true)."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "filter",
+                    "label": "Filter",
+                    "type": "string",
+                    "description": "Optional SOQL WHERE clause to filter users (e.g. IsActive = true)."
+                }
             ],
             "outputs": [
-                {"key": "users", "type": "array", "description": "Array of User records (Id, Name, Email, Username, IsActive)."},
-                {"key": "count", "type": "number", "description": "Number of users returned."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "users",
+                    "type": "array",
+                    "description": "Array of User records (Id, Name, Email, Username, IsActive)."
+                },
+                {
+                    "key": "count",
+                    "type": "number",
+                    "description": "Number of users returned."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -954,13 +2363,37 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a new Salesforce User.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "User field values (Username, Email, LastName, ProfileId, etc.).", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "User field values (Username, Email, LastName, ProfileId, etc.).",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the newly created User."},
-                {"key": "success", "type": "boolean", "description": "Whether creation succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the newly created User."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether creation succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -968,13 +2401,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Update an existing Salesforce User.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "user_id", "label": "User ID", "type": "string", "description": "Salesforce User record ID.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "User field values to update.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "user_id",
+                    "label": "User ID",
+                    "type": "string",
+                    "description": "Salesforce User record ID.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "User field values to update.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the user was updated (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the user was updated (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -982,13 +2441,35 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve the identity information for the currently authenticated Salesforce user.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "user_id", "type": "string", "description": "Salesforce user ID."},
-                {"key": "username", "type": "string", "description": "Salesforce username."},
-                {"key": "display_name", "type": "string", "description": "User display name."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "user_id",
+                    "type": "string",
+                    "description": "Salesforce user ID."
+                },
+                {
+                    "key": "username",
+                    "type": "string",
+                    "description": "Salesforce username."
+                },
+                {
+                    "key": "display_name",
+                    "type": "string",
+                    "description": "User display name."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -996,10 +2477,20 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve the API usage limits for the Salesforce org.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1007,11 +2498,25 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all active Salesforce Flow definitions.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of Flow record summaries."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of Flow record summaries."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1019,13 +2524,38 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Invoke a Salesforce Flow by its API name.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "flow_api_name", "label": "Flow API Name", "type": "string", "description": "API name of the Flow to invoke.", "required": true},
-                {"key": "inputs", "label": "Inputs", "type": "json", "description": "Map of input variable names to values."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "flow_api_name",
+                    "label": "Flow API Name",
+                    "type": "string",
+                    "description": "API name of the Flow to invoke.",
+                    "required": true
+                },
+                {
+                    "key": "inputs",
+                    "label": "Inputs",
+                    "type": "json",
+                    "description": "Map of input variable names to values."
+                }
             ],
             "outputs": [
-                {"key": "outputs", "type": "json", "description": "Map of output variable names to values."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "outputs",
+                    "type": "json",
+                    "description": "Map of output variable names to values."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1033,14 +2563,43 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Publish a Salesforce Platform Event.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "event_type", "label": "Event Type", "type": "string", "description": "Platform Event API name (e.g. My_Event__e).", "required": true},
-                {"key": "payload", "label": "Payload", "type": "json", "description": "Event field values to publish."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "event_type",
+                    "label": "Event Type",
+                    "type": "string",
+                    "description": "Platform Event API name (e.g. My_Event__e).",
+                    "required": true
+                },
+                {
+                    "key": "payload",
+                    "label": "Payload",
+                    "type": "json",
+                    "description": "Event field values to publish."
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID assigned to the published event record."},
-                {"key": "success", "type": "boolean", "description": "Whether publishing succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID assigned to the published event record."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether publishing succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1048,11 +2607,25 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List all Tooling API SObject types (metadata types) available in the org.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                }
             ],
             "outputs": [
-                {"key": "sobjects", "type": "array", "description": "Array of Tooling API SObject descriptors."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "sobjects",
+                    "type": "array",
+                    "description": "Array of Tooling API SObject descriptors."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1060,12 +2633,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "List metadata records of a given Tooling API type.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "metadata_type", "label": "Metadata Type", "type": "string", "description": "Tooling API metadata type name (e.g. ApexClass).", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "metadata_type",
+                    "label": "Metadata Type",
+                    "type": "string",
+                    "description": "Tooling API metadata type name (e.g. ApexClass).",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "records", "type": "array", "description": "Array of metadata record summaries."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "records",
+                    "type": "array",
+                    "description": "Array of metadata record summaries."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1073,13 +2666,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Read a single metadata record by Tooling API type and ID.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "metadata_type", "label": "Metadata Type", "type": "string", "description": "Tooling API metadata type name (e.g. ApexClass).", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the metadata record.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "metadata_type",
+                    "label": "Metadata Type",
+                    "type": "string",
+                    "description": "Tooling API metadata type name (e.g. ApexClass).",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "ID of the metadata record.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "Id", "type": "string", "description": "Metadata record ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "Id",
+                    "type": "string",
+                    "description": "Metadata record ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1087,14 +2706,44 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Create a metadata record via the Tooling API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "metadata_type", "label": "Metadata Type", "type": "string", "description": "Tooling API metadata type name.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Metadata field values.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "metadata_type",
+                    "label": "Metadata Type",
+                    "type": "string",
+                    "description": "Tooling API metadata type name.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Metadata field values.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "ID of the created metadata record."},
-                {"key": "success", "type": "boolean", "description": "Whether creation succeeded."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "ID of the created metadata record."
+                },
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "Whether creation succeeded."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1102,14 +2751,46 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Update a metadata record via the Tooling API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "metadata_type", "label": "Metadata Type", "type": "string", "description": "Tooling API metadata type name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the metadata record to update.", "required": true},
-                {"key": "fields", "label": "Fields", "type": "json", "description": "Metadata field values to update.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "metadata_type",
+                    "label": "Metadata Type",
+                    "type": "string",
+                    "description": "Tooling API metadata type name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "ID of the metadata record to update.",
+                    "required": true
+                },
+                {
+                    "key": "fields",
+                    "label": "Fields",
+                    "type": "json",
+                    "description": "Metadata field values to update.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the metadata record was updated (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the metadata record was updated (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1117,13 +2798,39 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Delete a metadata record via the Tooling API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "metadata_type", "label": "Metadata Type", "type": "string", "description": "Tooling API metadata type name.", "required": true},
-                {"key": "record_id", "label": "Record ID", "type": "string", "description": "ID of the metadata record to delete.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "metadata_type",
+                    "label": "Metadata Type",
+                    "type": "string",
+                    "description": "Tooling API metadata type name.",
+                    "required": true
+                },
+                {
+                    "key": "record_id",
+                    "label": "Record ID",
+                    "type": "string",
+                    "description": "ID of the metadata record to delete.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "success", "type": "boolean", "description": "True when the metadata record was deleted (204 No Content response)."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "success",
+                    "type": "boolean",
+                    "description": "True when the metadata record was deleted (204 No Content response)."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1131,12 +2838,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Deploy metadata changes to the org via the Metadata API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "deployment", "label": "Deployment", "type": "json", "description": "Deployment request body (zip file, options, etc.).", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "deployment",
+                    "label": "Deployment",
+                    "type": "json",
+                    "description": "Deployment request body (zip file, options, etc.).",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Deployment request ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Deployment request ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1144,12 +2871,32 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Retrieve metadata from the org via the Metadata API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "retrieve", "label": "Retrieve Request", "type": "json", "description": "Retrieve request body specifying components to retrieve.", "required": true}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "retrieve",
+                    "label": "Retrieve Request",
+                    "type": "json",
+                    "description": "Retrieve request body specifying components to retrieve.",
+                    "required": true
+                }
             ],
             "outputs": [
-                {"key": "id", "type": "string", "description": "Retrieve request ID."},
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "id",
+                    "type": "string",
+                    "description": "Retrieve request ID."
+                },
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         },
         {
@@ -1157,13 +2904,40 @@
             "plugin": "workflow-plugin-salesforce",
             "description": "Send an arbitrary HTTP request to the Salesforce REST API.",
             "configFields": [
-                {"key": "module", "label": "Module", "type": "string", "description": "Name of the salesforce.provider module instance.", "defaultValue": "salesforce"},
-                {"key": "method", "label": "HTTP Method", "type": "string", "description": "HTTP method to use (GET, POST, PATCH, PUT, DELETE). Defaults to GET.", "defaultValue": "GET"},
-                {"key": "path", "label": "Path", "type": "string", "description": "API path relative to the instance URL and API version (e.g. /sobjects/Account).", "required": true},
-                {"key": "body", "label": "Request Body", "type": "json", "description": "JSON request body (for POST, PATCH, PUT)."}
+                {
+                    "key": "module",
+                    "label": "Module",
+                    "type": "string",
+                    "description": "Name of the salesforce.provider module instance.",
+                    "defaultValue": "salesforce"
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP Method",
+                    "type": "string",
+                    "description": "HTTP method to use (GET, POST, PATCH, PUT, DELETE). Defaults to GET.",
+                    "defaultValue": "GET"
+                },
+                {
+                    "key": "path",
+                    "label": "Path",
+                    "type": "string",
+                    "description": "API path relative to the instance URL and API version (e.g. /sobjects/Account).",
+                    "required": true
+                },
+                {
+                    "key": "body",
+                    "label": "Request Body",
+                    "type": "json",
+                    "description": "JSON request body (for POST, PATCH, PUT)."
+                }
             ],
             "outputs": [
-                {"key": "error", "type": "string", "description": "Error message if the request failed."}
+                {
+                    "key": "error",
+                    "type": "string",
+                    "description": "Error message if the request failed."
+                }
             ]
         }
     ]
