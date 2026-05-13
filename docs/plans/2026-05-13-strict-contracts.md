@@ -126,24 +126,25 @@ git commit -m "feat: add salesforce proto messages for strict-contracts"
 **Files:**
 - Create: `gen/salesforce.pb.go`
 
-**Step 1: Check if protoc is available; if not, generate manually**
+**Step 1: Install protoc if needed, then generate**
 
 Run: `which protoc 2>/dev/null && echo "available" || echo "not available"`
 
-If protoc is available:
+If protoc is NOT available, install it first:
+```bash
+# macOS
+brew install protobuf
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+export PATH="$PATH:$(go env GOPATH)/bin"
+```
+
+Then generate:
 ```bash
 mkdir -p gen
 make proto-gen
 ```
 
-If protoc is NOT available, generate the pb.go manually by adapting from worldsim:
-
-The `gen/salesforce.pb.go` file must:
-- Declare `package salesforcev1`
-- Declare `var File_salesforce_proto` as a `protodesc.File` (accessible via `protodesc.ToFileDescriptorProto`)
-- Define `SalesforceProviderConfig`, `SalesforceStepInput`, `SalesforceStepOutput` structs with proper protobuf reflection
-
-The simplest approach when protoc is unavailable: copy `workflow-plugin-worldsim/gen/worldsim.pb.go` and adapt it. The pattern is identical — replace all `Worldsim*` with `Salesforce*` and field definitions accordingly.
+> IMPORTANT: Do NOT attempt to manually copy/adapt worldsim.pb.go. Generated pb.go files contain binary-encoded file descriptors (raw byte slices) that cannot be correctly produced by text substitution. Always use protoc.
 
 **Step 2: Verify the generated file compiles**
 
@@ -342,7 +343,7 @@ git commit -m "feat: add ContractRegistry with 73 contracts (1 module + 72 steps
 
 ---
 
-## Task 4: Add ContractRegistry method to plugin.go
+## Task 4: Verify ContractProvider interface wiring
 
 **Files:**
 - Modify: `internal/plugin.go`
@@ -907,10 +908,10 @@ Create `plugin.contracts.json` (mirrors worldsim structure exactly):
 }
 ```
 
-**Step 2: Verify entry count**
+**Step 2: Verify entry count and step type coverage**
 
-Run: `python3 -c "import json; d=json.load(open('plugin.contracts.json')); print(len(d['contracts']), 'contracts')"`
-Expected: `73 contracts`
+Run: `python3 -c "import json; d=json.load(open('plugin.contracts.json')); steps=[x for x in d['contracts'] if x['kind']=='step']; print(len(d['contracts']), 'contracts,', len(steps), 'step contracts')"`
+Expected: `73 contracts, 72 step contracts`
 
 **Step 3: Verify JSON is valid**
 
