@@ -2,11 +2,11 @@
 
 **Date:** 2026-05-13
 **Issue:** #5
-**Author:** autonomous pipeline (brainstorming phase)
+**Author:** autonomous pipeline (brainstorming phase; revised cycle 2 — Option 1 adopted)
 
 ## Goal
 
-Add `plugin.contracts.json` + proto-typed messages so the plugin passes `wfctl plugin validate --strict-contracts`. Mirror the worldsim PR #23 SDK pattern. Closes issue #5.
+Add `plugin.contracts.json` + proto-typed messages so the plugin passes `wfctl plugin validate --strict-contracts`. Mirror the worldsim PR #23 SDK pattern exactly. Closes issue #5.
 
 ## Context
 
@@ -14,28 +14,23 @@ The plugin currently has:
 - 1 module type: `salesforce.provider`
 - 72 step types across 14 Salesforce API categories
 - No `plugin.contracts.json`, no `.proto`, no `.pb.go`
-- CI validates `plugin.json` schema via `wfctl plugin validate --file plugin.json` (no `--strict-contracts` flag)
+- CI validates `plugin.json` schema via `wfctl plugin validate --file plugin.json` at wfctl v0.3.56 (no `--strict-contracts` flag)
 
-The worldsim precedent (1 step type dispatching 70+ operations via an `action` string) used `google.protobuf.Struct` to carry dynamic parameters. Salesforce has 72 individual step types — they must remain as-is per `feedback_force_strict_contracts_no_compat`.
+## Decision: Option 1 — Struct-for-all-inputs
 
-## Approach: Shared Message Groups (Single PR)
+Cycle-1 adversarial review found 6 Critical field-name drift bugs in the "12 shared Input message types" approach (field names in proto messages did not match the actual field names used in step Execute() implementations). The author adopted **Option 1** as the fix:
 
-Rather than 72 unique Input message types, we group the 72 steps into ~12 shared Input message types based on their actual parameter shapes. All steps share a common Output shape (`SalesforceOutput` with `data: google.protobuf.Struct`), avoiding the structpb typed-slice blocker.
-
-### Why single PR
-
-All 72 steps share structurally identical Output shapes (free-form SF REST response). The Input messages cover 10-12 distinct parameter shapes across all 72 steps. No step has a unique input/output signature that requires its own message pair. Single PR is correct.
-
-### Why not unique per-step messages
-
-72 unique Input + 72 unique Output messages = 144 proto messages. Most would be identical or differ by 1-2 fields. This is maximum complexity for minimum benefit. The worldsim precedent confirms `Struct` is the right tool for dynamic API payloads.
+- Use `google.protobuf.Struct` for ALL step inputs (same as worldsim's `WorldsimCallInput.params`).
+- This eliminates all 6 critical field-name drift findings in one stroke.
+- Reduces 28+ message types (cycle-1 design had ~32 Input messages) to **3 messages total**.
+- Steps already validate required fields at runtime — proto-level field-name enforcement adds nothing for this plugin's REST API call pattern.
 
 ## Proto Package Structure
 
 ```
 proto/
   salesforce/v1/
-    salesforce.proto        # all messages in one file
+    salesforce.proto        # all 3 messages in one file
 gen/
   salesforce.pb.go          # generated, committed
 ```
@@ -43,111 +38,159 @@ gen/
 Package: `workflow.plugin.salesforce.v1`
 Go package: `github.com/GoCodeAlone/workflow-plugin-salesforce/gen;salesforcev1`
 
-## Message Design
-
-### Module Config
+## Message Design (3 messages total)
 
 ```proto
+syntax = "proto3";
+package workflow.plugin.salesforce.v1;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/GoCodeAlone/workflow-plugin-salesforce/gen;salesforcev1";
+
+// SalesforceProviderConfig is the typed config for the salesforce.provider module.
+// Fields mirror internal.salesforceModuleConfig.
 message SalesforceProviderConfig {
-  string login_url     = 1;  // OAuth login URL
+  string login_url     = 1;  // OAuth login URL (default: https://login.salesforce.com)
   string client_id     = 2;  // OAuth client ID
   string client_secret = 3;  // OAuth client secret
   string access_token  = 4;  // Direct access token (alternative to OAuth)
   string instance_url  = 5;  // SF instance URL (required with access_token)
   string api_version   = 6;  // SF API version (default: v58.0)
 }
-```
 
-### Shared Output (all 72 steps)
+// SalesforceStepInput carries dynamic runtime inputs for any salesforce step.
+// All per-step parameters are passed as a free-form Struct to avoid requiring
+// 72 separate proto message types. Steps validate required params at runtime.
+message SalesforceStepInput {
+  google.protobuf.Struct params = 1;
+}
 
-```proto
-message SalesforceOutput {
-  bool success              = 1;  // false if error field is non-empty
-  string error              = 2;  // error description when success=false
-  google.protobuf.Struct data = 3;  // free-form SF REST API response body
+// SalesforceStepOutput holds the result of any salesforce step execution.
+// All per-step outputs are returned in the data Struct (free-form SF REST response).
+message SalesforceStepOutput {
+  bool   success = 1;  // false if error field is non-empty
+  string error   = 2;  // error description when success=false
+  google.protobuf.Struct data = 3;  // SF REST API response body
 }
 ```
 
-### Input Message Groups (12 types covering all 72 steps)
+## Step Config (no separate message — all 72 steps share StepInput/StepOutput)
 
-| Message | Steps |
-|---|---|
-| `RecordInput` (sobject_type, record_id, fields) | record_get, record_update, record_delete |
-| `RecordCreateInput` (sobject_type, fields) | record_create |
-| `RecordUpsertInput` (sobject_type, external_id_field, external_id_value, fields) | record_upsert |
-| `RecordDescribeInput` (sobject_type) | record_describe |
-| `EmptyInput` () | describe_global, approval_list, user_list, identity_get, org_limits, flow_list, report_list, dashboard_list, metadata_describe |
-| `QueryInput` (soql) | query, query_all, bulk_query |
-| `SearchInput` (sosl) | search |
-| `CollectionInput` (records, all_or_none) | collection_insert, collection_update |
-| `CollectionDeleteInput` (ids, all_or_none) | collection_delete |
-| `CollectionUpsertInput` (sobject_type, external_id_field, records, all_or_none) | collection_upsert |
-| `CompositeRequestInput` (composite_request, all_or_none) | composite_request |
-| `CompositeTreeInput` (sobject_type, records) | composite_tree |
-| `BulkJobInput` (sobject_type, external_id_field) | bulk_insert, bulk_update, bulk_upsert, bulk_delete |
-| `BulkJobQueryInput` (job_id, max_records) | bulk_query_results |
-| `BulkJobStatusInput` (job_id, job_type) | bulk_job_status, bulk_job_abort |
-| `ToolingInput` (sobject_type, record_id, fields, soql) | tooling_query, tooling_get, tooling_create, tooling_update, tooling_delete |
-| `ApexExecuteInput` (apex_body, log_levels) | apex_execute |
-| `ApexRestInput` (apex_path, body) | apex_get, apex_post, apex_patch, apex_put, apex_delete |
-| `ReportInput` (report_id) | report_describe, report_run |
-| `DashboardInput` (dashboard_id) | dashboard_describe, dashboard_refresh |
-| `ApprovalActionInput` (record_id, work_item_id, comments) | approval_submit, approval_approve, approval_reject |
-| `ChatterPostInput` (subject_id, text) | chatter_post |
-| `ChatterCommentInput` (feed_element_id, text) | chatter_comment, chatter_like, chatter_feed_list |
-| `FileUploadInput` (title, path_on_client, version_data, linked_entity_id) | file_upload, content_version_create |
-| `FileDownloadInput` (content_version_id) | file_download, content_document_get, content_document_delete |
-| `UserGetInput` (user_id) | user_get |
-| `UserCreateInput` (fields) | user_create |
-| `UserUpdateInput` (user_id, fields) | user_update |
-| `FlowRunInput` (flow_api_name, inputs) | flow_run |
-| `EventPublishInput` (event_type, payload) | event_publish |
-| `MetadataInput` (metadata_type, full_names, metadata) | metadata_list, metadata_read, metadata_create, metadata_update, metadata_delete, metadata_deploy, metadata_retrieve |
-| `RawRequestInput` (method, path, body) | raw_request |
+Each step contract entry uses:
+- Config: none (step config is part of the module config; steps have no extra per-step config fields in the current implementation)
+- Input: `workflow.plugin.salesforce.v1.SalesforceStepInput`
+- Output: `workflow.plugin.salesforce.v1.SalesforceStepOutput`
 
-### Step Config (all steps share common module reference)
+> Note: If `wfctl plugin validate --strict-contracts` requires a ConfigMessage for each step entry, use an empty `SalesforceStepConfig {}` message. This will be verified during implementation before committing contracts.go.
 
-```proto
-message SalesforceStepConfig {
-  string module = 1;  // salesforce.provider module name (default: "salesforce")
-}
-```
+## plugin.contracts.json (73 entries)
 
-Each step type uses `SalesforceStepConfig` as its Config message, plus its specific Input message and `SalesforceOutput` as Output.
+All 73 contracts use `mode: strict_proto` and reference the 3 messages above:
+- 1 module contract: `salesforce.provider` → config: `SalesforceProviderConfig`
+- 72 step contracts: each step type → input: `SalesforceStepInput`, output: `SalesforceStepOutput`
+
+The 72 step types (from `internal/step_registry.go`):
+- SObject CRUD (7): salesforce_record_get, record_create, record_update, record_upsert, record_delete, record_describe, describe_global
+- SOQL/SOSL (3): salesforce_query, query_all, search
+- Collections (4): collection_insert, collection_update, collection_upsert, collection_delete
+- Composite (2): composite_request, composite_tree
+- Bulk API v2 (8): bulk_insert, bulk_update, bulk_upsert, bulk_delete, bulk_query, bulk_query_results, bulk_job_status, bulk_job_abort
+- Tooling API (5): tooling_query, tooling_get, tooling_create, tooling_update, tooling_delete
+- Apex (6): apex_execute, apex_get, apex_post, apex_patch, apex_put, apex_delete
+- Reports/Dashboards (4): report_list, report_describe, report_run, dashboard_list, dashboard_describe, dashboard_refresh
+- Approvals (4): approval_list, approval_submit, approval_approve, approval_reject
+- Chatter (4): chatter_post, chatter_comment, chatter_like, chatter_feed_list
+- Files (4): file_upload, file_download, content_version_create, content_document_get, content_document_delete
+- Users (5): user_list, user_get, user_create, user_update, identity_get
+- Flows/Events (2): flow_list, flow_run, event_publish
+- Metadata (7): metadata_describe, metadata_list, metadata_read, metadata_create, metadata_update, metadata_delete, metadata_deploy, metadata_retrieve
+- Misc (1): raw_request, org_limits
+
+> Step type strings use the `step.salesforce_` prefix (from step_registry.go).
 
 ## ContractRegistry Implementation
 
-Follows worldsim pattern exactly:
-- `internal/contracts.go` implements `ContractRegistry() *pb.ContractRegistry`
-- `salesforcePlugin` gets `ContractRegistry()` method
-- `plugin.contracts.json` declares all 73 contracts (1 module + 72 steps)
+Mirrors worldsim `internal/contracts.go` exactly:
+
+```go
+package internal
+
+import (
+    salesforcev1 "github.com/GoCodeAlone/workflow-plugin-salesforce/gen"
+    pb "github.com/GoCodeAlone/workflow/plugin/external/proto"
+    "google.golang.org/protobuf/reflect/protodesc"
+    "google.golang.org/protobuf/types/descriptorpb"
+    "google.golang.org/protobuf/types/known/structpb"
+)
+
+func (p *salesforcePlugin) ContractRegistry() *pb.ContractRegistry {
+    return salesforceContractRegistry
+}
+
+var salesforceContractRegistry = &pb.ContractRegistry{
+    FileDescriptorSet: &descriptorpb.FileDescriptorSet{
+        File: []*descriptorpb.FileDescriptorProto{
+            protodesc.ToFileDescriptorProto(structpb.File_google_protobuf_struct_proto),
+            protodesc.ToFileDescriptorProto(salesforcev1.File_salesforce_proto),
+        },
+    },
+    Contracts: []*pb.ContractDescriptor{
+        // module
+        {
+            Kind:          pb.ContractKind_CONTRACT_KIND_MODULE,
+            ModuleType:    "salesforce.provider",
+            ConfigMessage: sfProtoPkg + "SalesforceProviderConfig",
+            Mode:          pb.ContractMode_CONTRACT_MODE_STRICT_PROTO,
+        },
+        // 72 step entries follow (generated or hand-written loop)
+        // Each entry: Kind=STEP, StepType="step.salesforce_X",
+        // InputMessage=sfProtoPkg+"SalesforceStepInput",
+        // OutputMessage=sfProtoPkg+"SalesforceStepOutput"
+    },
+}
+
+const sfProtoPkg = "workflow.plugin.salesforce.v1."
+
+var _ interface{ ContractRegistry() *pb.ContractRegistry } = (*salesforcePlugin)(nil)
+```
 
 ## CI Update
 
-Replace existing `wfctl-strict-contracts` job with worldsim-style job that:
-1. Checks both `plugin.json` and `plugin.contracts.json` exist
-2. Derives wfctl version from `go.mod`
-3. Uses `GoCodeAlone/setup-wfctl@bcd880980f5bbe8d192d0c20ff6279d25331f956`
-4. Runs `wfctl plugin validate --file plugin.json --strict-contracts`
+Replace existing `wfctl plugin validate --file plugin.json` (wfctl v0.3.56) with worldsim-style job:
+1. Check `plugin.json` and `plugin.contracts.json` both exist
+2. Derive wfctl version from `go.mod`
+3. Use `GoCodeAlone/setup-wfctl@bcd880980f5bbe8d192d0c20ff6279d25331f956`
+4. Run `wfctl plugin validate --file plugin.json --strict-contracts`
+
+> Note: The existing CI has a duplicate `test` + `test-lint` job pair that both do identical steps. This design does not change that — it only updates the `wfctl-strict-contracts` job.
 
 ## Files Changed
 
-- `proto/salesforce/v1/salesforce.proto` — new
-- `gen/salesforce.pb.go` — new (generated)
-- `internal/contracts.go` — new
+- `proto/salesforce/v1/salesforce.proto` — new (3 messages)
+- `gen/salesforce.pb.go` — new (generated, committed)
+- `internal/contracts.go` — new (ContractRegistry implementation)
 - `internal/plugin.go` — add `ContractRegistry()` method
-- `plugin.contracts.json` — new
+- `plugin.contracts.json` — new (73 entries)
 - `Makefile` — add `proto-gen` target
-- `.github/workflows/ci.yml` — update strict-contracts job
+- `.github/workflows/ci.yml` — update `wfctl-strict-contracts` job
 
 ## Assumptions
 
-1. `google.protobuf.Struct` is accepted by the strict-contracts validator for Output data fields (confirmed: worldsim uses this pattern).
-2. All 72 step types retain their existing names and runtime behavior — no breaking changes to the step execute path.
-3. The `SalesforceStepConfig.module` field (string, default "salesforce") correctly mirrors how `getModuleName(config)` works.
-4. Committing the generated `.pb.go` file is correct (worldsim does this; no protoc required in CI).
-5. `wfctl plugin validate --strict-contracts` passes when `plugin.contracts.json` + `plugin.pb.go` + `ContractRegistry()` are all present.
+1. `google.protobuf.Struct` is accepted by the strict-contracts validator for input/output data fields. **Confirmed: worldsim uses this pattern and passes.**
+2. All 72 step types retain their existing names and runtime behavior — no breaking changes to the step Execute() path.
+3. The `salesforcePlugin` type in `internal/plugin.go` is the type that implements the sdk interface and can accept the `ContractRegistry()` method.
+4. Committing the generated `.pb.go` file is correct (worldsim does this; protoc not required in CI).
+5. `wfctl plugin validate --strict-contracts` passes when `plugin.contracts.json` + `gen/salesforce.pb.go` + `ContractRegistry()` method are present.
+6. Steps do NOT have a per-step Config message in this plugin's implementation (steps get their config via the module). If `wfctl` requires a ConfigMessage per step contract, an empty `SalesforceStepConfig {}` message will be added. This is verified during implementation, not assumed.
+7. The step count of 72 is authoritative from `internal/step_registry.go`. If `plugin.json`'s 72 `stepSchemas` entries and the registry entries diverge, the registry is the source of truth for contracts.
 
 ## Rollback
 
-No runtime behavior changes — ContractRegistry is metadata-only. If the CI job fails, revert the `.github/workflows/ci.yml` change to restore the pre-strict job. The proto/gen/contracts files can be removed without affecting plugin execution.
+No runtime behavior changes — ContractRegistry is metadata-only. Rollback = revert the `ci.yml` change to the pre-strict job, then delete `plugin.contracts.json`, `proto/`, `gen/`, and `internal/contracts.go`. Plugin execution is unaffected because ContractRegistry is only called by the validator.
+
+## Tradeoffs Accepted
+
+- **No field-level enforcement at proto boundary**: Option 1 trades static field-name checking for zero drift risk. Accepted because: (a) 72 steps already validate fields at runtime, (b) cycle-1 design had 6 Critical bugs from drift, (c) worldsim uses the same pattern successfully.
+- **73 nearly-identical contracts.json entries**: The file is mechanical/generated. Verbose but correct.
+- **Step config not typed in proto**: Steps don't have meaningful per-step config in this plugin. Not typing it is YAGNI.
