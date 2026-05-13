@@ -1,0 +1,515 @@
+{
+  "version": "1",
+  "contracts": [
+    {
+      "kind": "module",
+      "type": "salesforce.provider",
+      "mode": "strict_proto",
+      "config": "workflow.plugin.salesforce.v1.SalesforceProviderConfig"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_create",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_upsert",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_record_describe",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_describe_global",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_query",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_query_all",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_search",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_collection_insert",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_collection_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_collection_upsert",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_collection_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_composite_request",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_composite_tree",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_insert",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_upsert",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_query",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_query_results",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_job_status",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_bulk_job_abort",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_tooling_query",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_tooling_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_tooling_create",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_tooling_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_tooling_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_execute",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_post",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_patch",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_put",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_apex_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_report_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_report_describe",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_report_run",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_dashboard_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_dashboard_describe",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_dashboard_refresh",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_approval_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_approval_submit",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_approval_approve",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_approval_reject",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_chatter_post",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_chatter_comment",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_chatter_like",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_chatter_feed_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_file_upload",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_file_download",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_content_version_create",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_content_document_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_content_document_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_user_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_user_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_user_create",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_user_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_identity_get",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_org_limits",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_flow_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_flow_run",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_event_publish",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_describe",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_list",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_read",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_create",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_update",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_delete",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_deploy",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_metadata_retrieve",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    },
+    {
+      "kind": "step",
+      "type": "step.salesforce_raw_request",
+      "mode": "strict_proto",
+      "input": "workflow.plugin.salesforce.v1.SalesforceStepInput",
+      "output": "workflow.plugin.salesforce.v1.SalesforceStepOutput"
+    }
+  ]
+}

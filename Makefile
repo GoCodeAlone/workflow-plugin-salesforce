@@ -1,4 +1,4 @@
-.PHONY: build test install cross-build clean
+.PHONY: build test install cross-build clean proto-gen
 
 BINARY_NAME = workflow-plugin-salesforce
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
@@ -30,3 +30,10 @@ cross-build:
 
 clean:
 	rm -rf bin/
+
+proto-gen:
+	protoc \
+		--proto_path=proto/salesforce/v1 \
+		--go_out=gen \
+		--go_opt=paths=source_relative \
+		proto/salesforce/v1/salesforce.proto

@@ -1,0 +1,42 @@
+syntax = "proto3";
+package workflow.plugin.salesforce.v1;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/GoCodeAlone/workflow-plugin-salesforce/gen;salesforcev1";
+
+// SalesforceProviderConfig is the typed config for the salesforce.provider module.
+// Fields mirror internal.salesforceModule config keys (camelCase in YAML; proto uses snake_case).
+message SalesforceProviderConfig {
+  // login_url is the OAuth login URL (default: https://login.salesforce.com).
+  string login_url = 1;
+  // client_id is the OAuth client ID.
+  string client_id = 2;
+  // client_secret is the OAuth client secret.
+  string client_secret = 3;
+  // access_token is the direct access token (alternative to OAuth).
+  string access_token = 4;
+  // instance_url is the SF instance URL (required when using access_token).
+  string instance_url = 5;
+  // api_version is the SF API version (default: v63.0).
+  string api_version = 6;
+}
+
+// SalesforceStepInput carries dynamic runtime inputs for any salesforce step.
+// All per-step parameters are passed as a free-form Struct to avoid requiring
+// 72 separate proto message types. Steps validate required params at runtime.
+message SalesforceStepInput {
+  // params holds the step-specific input parameters.
+  google.protobuf.Struct params = 1;
+}
+
+// SalesforceStepOutput holds the result of any salesforce step execution.
+// All per-step outputs are returned in the data Struct (free-form SF REST response).
+message SalesforceStepOutput {
+  // success indicates whether the step completed without error.
+  bool success = 1;
+  // error holds the error description when success is false.
+  string error = 2;
+  // data holds the step-specific output fields.
+  google.protobuf.Struct data = 3;
+}
