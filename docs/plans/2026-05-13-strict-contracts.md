@@ -30,7 +30,7 @@
 |------|-------|-------|--------|
 | 1 | feat: add strict-contracts (proto + ContractRegistry + CI) | Task 1, Task 2, Task 3, Task 4, Task 5, Task 6 | feat/issue-5-strict-contracts |
 
-**Status:** Draft
+**Status:** Locked 2026-05-13T00:00:00Z
 
 ---
 
