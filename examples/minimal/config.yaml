@@ -1,0 +1,16 @@
+# Minimal config exercising workflow-plugin-salesforce.
+# Schema-validate with: wfctl validate --skip-unknown-types examples/minimal/config.yaml
+
+version: 1
+
+modules:
+  - name: salesforce-provider
+    type: salesforce.provider
+    config: {}
+
+workflows:
+  pipeline:
+    steps:
+      - name: example
+        type: step.sf_record_create
+        config: {}
