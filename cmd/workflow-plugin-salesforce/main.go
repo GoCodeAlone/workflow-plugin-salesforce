@@ -8,5 +8,5 @@ import (
 var version = "dev"
 
 func main() {
-	sdk.Serve(internal.NewSalesforcePlugin())
+	sdk.Serve(internal.NewSalesforcePlugin(), sdk.WithBuildVersion(sdk.ResolveBuildVersion(internal.Version)))
 }

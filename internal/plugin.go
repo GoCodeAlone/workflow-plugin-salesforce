@@ -9,7 +9,7 @@ import (
 
 // Version is set at build time via -ldflags
 // "-X github.com/GoCodeAlone/workflow-plugin-salesforce/internal.Version=X.Y.Z"
-var Version = "dev"
+var Version = "0.0.0"
 
 // salesforcePlugin implements sdk.PluginProvider, sdk.ModuleProvider, and sdk.StepProvider.
 type salesforcePlugin struct{}
